@@ -9,7 +9,7 @@ function skipChars(state: any, pos: number, code: number) : number {
 }
 
 
-function plugin(md: MarkdownIt) {
+function expressionPlugin(md: MarkdownIt) {
     function tokenize(state: any, silent: any) {
         const openDelim = 0x7b;
         const closeDelim = 0x7d;
@@ -74,4 +74,4 @@ function plugin(md: MarkdownIt) {
 
 
 
-export default plugin;
+export default expressionPlugin;

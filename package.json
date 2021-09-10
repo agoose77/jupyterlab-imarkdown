@@ -45,6 +45,7 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
+    "@agoose77/jupyterlab-markup": "^1.0.0",
     "@jupyterlab/application": "^3.1.0",
     "@jupyterlab/notebook": "^3.1.0",
     "markdown-it": "^10.0.0"
@@ -69,7 +70,13 @@
   "styleModule": "style/index.js",
   "jupyterlab": {
     "extension": true,
-    "outputDir": "jupyterlab_imarkdown/labextension"
+    "outputDir": "jupyterlab_imarkdown/labextension",
+    "sharedPackages": {
+      "@agoose77/jupyterlab-markup": {
+        "bundled": false,
+        "singleton": true
+      }
+    }
   },
   "jupyter-releaser": {
     "hooks": {

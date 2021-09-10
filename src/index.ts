@@ -1,5 +1,5 @@
 import {JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterlab/application';
-
+import {plugin} from "./plugin"
 import {NotebookPanel} from '@jupyterlab/notebook';
 import {IEditorServices} from '@jupyterlab/codeeditor';
 
@@ -27,5 +27,5 @@ const factory: JupyterFrontEndPlugin<NotebookPanel.IContentFactory> = {
 /**
  * Export the plugins as default.
  */
-const plugins: JupyterFrontEndPlugin<any>[] = [factory];
+const plugins: JupyterFrontEndPlugin<any>[] = [factory, plugin];
 export default plugins;
