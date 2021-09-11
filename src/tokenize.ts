@@ -59,8 +59,7 @@ function expressionPlugin(md: MarkdownIt) {
 
         let token = state.push('expr_open', 'span', 1);
         token.attrSet("data-expression", expression);
-        token = state.push('text', '', 0);
-        token.content = expression;
+        state.push('text', '', 0);
         state.push('expr_close', 'span', -1);
 
         return true;
