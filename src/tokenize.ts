@@ -34,7 +34,6 @@ function expressionPlugin(md: MarkdownIt) {
         // Find end marker }
         let foundEndMarker = false;
         while (pos <= stop) {
-            console.log(state.src.charCodeAt(pos));
             // Didn't find end marker
             if (state.src.charCodeAt(pos) === closeDelim) {
                 foundEndMarker = true;
@@ -42,14 +41,11 @@ function expressionPlugin(md: MarkdownIt) {
             }
             pos++;
         }
-
         if (!foundEndMarker) {
             return false;
         }
-
         // Index of first } in  }}
         const stopPos = pos;
-
         // We need exactly two end markers }}
         searchStartPos = pos;
         pos = skipChars(state, pos, closeDelim);
