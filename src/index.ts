@@ -4,22 +4,16 @@ import {
 } from '@jupyterlab/application';
 import { plugin } from './plugin';
 import {
-  Notebook,
   INotebookTracker,
+  Notebook,
   NotebookActions,
   NotebookPanel
 } from '@jupyterlab/notebook';
 import { IEditorServices } from '@jupyterlab/codeeditor';
-import { MarkdownCell, IMarkdownCellModel, Cell } from '@jupyterlab/cells';
+import { Cell, MarkdownCell } from '@jupyterlab/cells';
 import { StaticNotebook } from '@jupyterlab/notebook/lib/widget';
-import {
-  IXMarkdownCellMetadata,
-  JUPYTER_IMARKDOWN_METADATA_NAME,
-  XMarkdownCell
-} from './cell';
-import { ISessionContext } from '@jupyterlab/apputils';
-import { KernelMessage } from '@jupyterlab/services';
-import { PartialJSONObject } from '@lumino/coreutils/src/json';
+import { XMarkdownCell } from './cell';
+import { loadUserExpressions } from './kernel';
 
 class IXMarkdownContentFactory extends NotebookPanel.ContentFactory {
   /**
@@ -54,67 +48,6 @@ const factory: JupyterFrontEndPlugin<NotebookPanel.IContentFactory> = {
     return new IXMarkdownContentFactory({ editorFactory });
   }
 };
-
-async function loadUserExpressions(
-  cell: XMarkdownCell,
-  sessionContext: ISessionContext
-) {
-  const model = cell.model as IMarkdownCellModel;
-  const cellId = { cellId: model.id };
-
-  // Populate request data
-  console.log('Building expressions');
-  const content: KernelMessage.IExecuteRequestMsg['content'] = {
-    code: '',
-    user_expressions: cell.expressions
-  };
-
-  // Perform request
-  console.log('Performing request', cell.expressions);
-  const kernel = sessionContext.session?.kernel;
-  if (!kernel) {
-    throw new Error('Session has no kernel.');
-  }
-  const future = kernel.requestExecute(content, false, {
-    ...model.metadata.toJSON(),
-    ...cellId
-  });
-  future.onReply = (msg: KernelMessage.IExecuteReplyMsg) => {
-    const content = msg.content;
-    if (content.status !== 'ok') {
-      return;
-    }
-
-    console.log('Handling response');
-
-    // Set new metadata
-    const newMetadata: IXMarkdownCellMetadata = {
-      attachments: []
-    };
-    const userExpressionsResponse = content.user_expressions;
-    console.log(userExpressionsResponse);
-    for (const key in userExpressionsResponse) {
-      const result = userExpressionsResponse[key]! as PartialJSONObject;
-      const data = result['data'];
-      console.log({ key, data });
-      if (data === undefined) {
-        continue;
-      }
-
-      // Generate UUID per-result
-      const model = result['data'] as any;
-      cell.model.attachments.set(key, model);
-      console.log('Writing attachment', { key, model });
-      newMetadata.attachments.push(key);
-    }
-    cell.model.metadata.set(JUPYTER_IMARKDOWN_METADATA_NAME, newMetadata);
-  };
-  await future.done;
-  // await new Promise<void>();
-
-  // cell.rendered = false;
-  // cell.rendered = true;
-}
 
 function isMarkdownCell(cell: Cell): cell is XMarkdownCell {
   return cell.model.type === 'markdown';

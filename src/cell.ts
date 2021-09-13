@@ -1,15 +1,10 @@
 import { MarkdownCell } from '@jupyterlab/cells';
 import { Widget } from '@lumino/widgets';
 import { JUPYTER_IMARKDOWN_EXPR_CLASS } from './tokenize';
-import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
-import { PartialJSONObject } from '@lumino/coreutils/src/json';
+import { IRenderMimeRegistry, IRenderMime } from '@jupyterlab/rendermime';
 import { PromiseDelegate } from '@lumino/coreutils';
 
-export const JUPYTER_IMARKDOWN_METADATA_NAME = 'jupyterlab-imarkdown';
-
-export interface IXMarkdownCellMetadata extends PartialJSONObject {
-  attachments: string[];
-}
+export const JUPYTER_IMARKDOWN_EXPRESSION_PREFIX = 'jupyterlab-imarkdown';
 
 interface IExpressionMap {
   [name: string]: string;
@@ -20,36 +15,58 @@ interface IElementMap {
 }
 
 export class XMarkdownCell extends MarkdownCell {
-  private __rendermime: IRenderMimeRegistry;
-  private __expressions: IExpressionMap = {};
-  private __placeholders: IElementMap = {};
-  private __lastContent = '';
-  private __doneRendering = new PromiseDelegate<void>();
-
-  get expressions(): IExpressionMap {
-    return this.__expressions;
-  }
-
-  get doneRendering(): Promise<void> {
-    return this.__doneRendering.promise;
-  }
-
   constructor(options: MarkdownCell.IOptions) {
     super(options);
 
     this.__rendermime = options.rendermime;
   }
 
+  private __rendermime: IRenderMimeRegistry;
+  private __expressions: IExpressionMap = {};
+  private __placeholders: IElementMap = {};
+  private __lastContent = '';
+  private __doneRendering = new PromiseDelegate<void>();
+
+  /**
+   * Get a mapping of names to kernel expressions.
+   */
+  get expressions(): IExpressionMap {
+    return this.__expressions;
+  }
+
+  /**
+   * Whether the Markdown renderer has finished rendering.
+   */
+  get doneRendering(): Promise<void> {
+    return this.__doneRendering.promise;
+  }
+
+  private _updatePlaceholder(
+    name: string,
+    renderer: IRenderMime.IRenderer
+  ): void {
+    const placeholder = this.__placeholders[name];
+    placeholder.parentNode?.replaceChild(renderer.node, placeholder);
+    this.__placeholders[name] = renderer.node;
+  }
+
+  private _postProcessRenderer(renderer: IRenderMime.IRenderer): void {
+    // FIXME: [HACK] Force inline
+    renderer.node.style.display = 'inline';
+    renderer.node.style.paddingRight = '0';
+  }
+
   public renderExpressions() {
-    // Loop over placeholders + eval results to template
+    // Loop over expressions and render them from the cell attachments
     for (const name in this.__expressions) {
-      // We need an attachment!
       const attachment = this.model.attachments.get(name);
+      // We need an attachment!
       if (attachment === undefined) {
         console.log(`Couldn't find attachment ${name}`);
         continue;
       }
 
+      // FIXME: choose appropriate value for `safe`
       // Select preferred mimetype for bundle
       const mimeType = this.__rendermime.preferredMimeType(
         attachment.data,
@@ -64,20 +81,21 @@ export class XMarkdownCell extends MarkdownCell {
       const renderer = this.__rendermime.createRenderer(mimeType);
       const model = this.__rendermime.createModel({ data: attachment.data });
 
-      // Replace existing node
-      const placeholder = this.__placeholders[name];
-      placeholder.parentNode?.replaceChild(renderer.node, placeholder);
-      this.__placeholders[name] = renderer.node;
-
-      // FIXME: [HACK] Force inline
       renderer.renderModel(model).then(() => {
-        renderer.node.style.display = 'inline';
-        renderer.node.style.paddingRight = '0';
+        this._postProcessRenderer(renderer);
       });
+
+      // Replace existing node
+      this._updatePlaceholder(name, renderer);
     }
   }
 
+  /**
+   * Wait for Markdown rendering to complete.
+   * Assume that rendered container will have at least one child.
+   */
   private _waitForRender(widget: Widget, timeout: number): Promise<void> {
+    // FIXME: this is a HACK
     return new Promise(resolve => {
       function waitReady() {
         const firstChild = widget.node.querySelector('.jp-RenderedMarkdown *');
@@ -123,7 +141,7 @@ export class XMarkdownCell extends MarkdownCell {
     this.__placeholders = {};
     exprInputNodes.forEach((node: Element, index: number) => {
       let inode = node as HTMLInputElement;
-      const name = `expr-${index}`;
+      const name = `${JUPYTER_IMARKDOWN_EXPRESSION_PREFIX}-${index}`;
       this.__expressions[name] = inode.value;
       this.__placeholders[name] = inode;
     });
