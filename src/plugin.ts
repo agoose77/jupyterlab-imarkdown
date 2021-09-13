@@ -3,7 +3,7 @@ import {simpleMarkdownItPlugin} from "@agoose77/jupyterlab-markup"
 
 const PACKAGE_NS = "@agoose77/jupyterlab-imarkdown"
 /**
- * Adds anchors to headers
+ * Captures expressions as data-attributes 
  */
 export const plugin = simpleMarkdownItPlugin(PACKAGE_NS, {
     id: 'markdown-it-expression',

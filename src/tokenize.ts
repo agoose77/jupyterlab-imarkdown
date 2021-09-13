@@ -41,14 +41,11 @@ function expressionPlugin(md: MarkdownIt) {
             }
             pos++;
         }
-
         if (!foundEndMarker) {
             return false;
         }
-
         // Index of first } in  }}
         const stopPos = pos;
-
         // We need exactly two end markers }}
         searchStartPos = pos;
         pos = skipChars(state, pos, closeDelim);
