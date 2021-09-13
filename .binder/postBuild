@@ -2,7 +2,7 @@
 set -eux
 
 # Install the labextension
-jlpm run bootstrap
+jlpm build
 pip install -e . --ignore-installed --no-deps -vv
 jupyter labextension develop . --overwrite
 

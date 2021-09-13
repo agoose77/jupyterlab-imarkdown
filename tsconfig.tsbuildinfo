@@ -2216,13 +2216,9 @@
         "signature": "3d0255fe2b4da0f0e98618bfbf0ff27fab67b53381b2f2d11763d93ec1daec63",
         "affectsGlobalScope": false
       },
-      "./node_modules/@lumino/coreutils/src/json.ts": {
-        "version": "e13fdf04187b3ebd7457c5c6550562b9f3fec3c32e0220fc044ff326ae28b2b4",
-        "affectsGlobalScope": false
-      },
       "./src/cell.ts": {
-        "version": "7db910ca7211323a747197e11c0035bbc78d74b3956e5d2cb75f4401a98583b1",
-        "signature": "a5ba72e61d4b762a781e822acd9a057633ea1f2f0b8dbf4795b7545bbf95b24c",
+        "version": "ce414aac37fd648a9cb8d284cd5e73abcf1c2e04a355c79881cb0cfccdd5c7a3",
+        "signature": "1a5ada1e2104c995e7c18d021ac9ad5339ab9c7af253dd8a62b107fbd905a780",
         "affectsGlobalScope": false
       },
       "./node_modules/@jupyterlab/application/lib/tokens.d.ts": {
@@ -2435,8 +2431,17 @@
         "signature": "4db7ae8b183bf7eceb57417b7af31b734d6e941939c6ad81bee671f8403a42d4",
         "affectsGlobalScope": false
       },
+      "./node_modules/@lumino/coreutils/src/json.ts": {
+        "version": "e13fdf04187b3ebd7457c5c6550562b9f3fec3c32e0220fc044ff326ae28b2b4",
+        "affectsGlobalScope": false
+      },
+      "./src/kernel.ts": {
+        "version": "79227f8daabe5b645ddef282578aba5b74fb5db2869e53a39cbe3a99c1ac09de",
+        "signature": "7462d71d52d0360379a9e1fb1ab44785419bcb897649852f24c06f8aeab4c60a",
+        "affectsGlobalScope": false
+      },
       "./src/index.ts": {
-        "version": "881321e89b1c486dacc7948dd04a9644db21296ab9efc6811e6fd2eb0365092e",
+        "version": "75165cea5c5d3662e245f7ab68f5998063a39d9c2531199b5883a4d452cc0f55",
         "signature": "80abfe24d803f8a3964054f58785cfd2c53b03c2058d007fb5ee60a83136ecd4",
         "affectsGlobalScope": false
       }
@@ -4831,22 +4836,26 @@
       "./src/cell.ts": [
         "./node_modules/@jupyterlab/cells/lib/index.d.ts",
         "./node_modules/@jupyterlab/rendermime/lib/index.d.ts",
-        "./node_modules/@lumino/coreutils/src/json.ts",
         "./node_modules/@lumino/coreutils/types/index.d.ts",
         "./node_modules/@lumino/widgets/types/index.d.ts",
         "./src/tokenize.ts"
       ],
       "./src/index.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
-        "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@jupyterlab/cells/lib/index.d.ts",
         "./node_modules/@jupyterlab/codeeditor/lib/index.d.ts",
         "./node_modules/@jupyterlab/notebook/lib/index.d.ts",
         "./node_modules/@jupyterlab/notebook/lib/widget.d.ts",
+        "./src/cell.ts",
+        "./src/kernel.ts",
+        "./src/plugin.ts"
+      ],
+      "./src/kernel.ts": [
+        "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
+        "./node_modules/@jupyterlab/cells/lib/index.d.ts",
         "./node_modules/@jupyterlab/services/lib/index.d.ts",
         "./node_modules/@lumino/coreutils/src/json.ts",
-        "./src/cell.ts",
-        "./src/plugin.ts"
+        "./src/cell.ts"
       ],
       "./src/plugin.ts": [
         "./node_modules/@agoose77/jupyterlab-markup/lib/index.d.ts",
@@ -7222,11 +7231,14 @@
       ],
       "./src/cell.ts": [
         "./node_modules/@jupyterlab/cells/lib/index.d.ts",
-        "./node_modules/@lumino/coreutils/src/json.ts",
         "./node_modules/@lumino/widgets/types/index.d.ts"
       ],
       "./src/index.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts"
+      ],
+      "./src/kernel.ts": [
+        "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
+        "./src/cell.ts"
       ],
       "./src/plugin.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts"
@@ -7722,6 +7734,7 @@
       "./node_modules/yjs/dist/src/utils/updates.d.ts",
       "./src/cell.ts",
       "./src/index.ts",
+      "./src/kernel.ts",
       "./src/plugin.ts",
       "./src/tokenize.ts"
     ]
