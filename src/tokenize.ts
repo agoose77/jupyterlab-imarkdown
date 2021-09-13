@@ -34,7 +34,6 @@ function expressionPlugin(md: MarkdownIt) {
         // Find end marker }
         let foundEndMarker = false;
         while (pos <= stop) {
-            console.log(state.src.charCodeAt(pos));
             // Didn't find end marker
             if (state.src.charCodeAt(pos) === closeDelim) {
                 foundEndMarker = true;
@@ -61,11 +60,10 @@ function expressionPlugin(md: MarkdownIt) {
         const expression = state.src.slice(startPos, stopPos);
         state.pos = pos;
 
-        let token = state.push('expr_open', 'span', 1);
-        token.attrSet("data-expression", expression);
-        token = state.push('text', '', 0);
-        token.content = expression;
-        state.push('expr_close', 'span', -1);
+        let token = state.push('expr', 'input', 0);
+        token.attrSet("type", "hidden");
+        token.attrSet("class", "jupyter-imarkdown-expr")
+        token.attrSet("value", expression)
 
         return true;
     }
