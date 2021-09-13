@@ -1,6 +1,10 @@
 # jupyterlab_imarkdown
 
-![Github Actions Status](https://github.com/agoose77/jupyterlab-imarkdown/workflows/Build/badge.svg)
+[![binder-badge][]][binder]
+
+[binder-badge]: https://mybinder.org/badge_logo.svg
+[binder]: https://mybinder.org/v2/gh/agoose77/jupyterlab-imarkdown.git/master?urlpath=lab
+
 
 A JupyterLab extension.
 
