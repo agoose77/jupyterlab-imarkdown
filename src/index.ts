@@ -7,37 +7,7 @@ import { NotebookPanel } from '@jupyterlab/notebook';
 import { IEditorServices } from '@jupyterlab/codeeditor';
 import { MarkdownCell } from '@jupyterlab/cells';
 import { StaticNotebook } from '@jupyterlab/notebook/lib/widget';
-import { Message } from '@lumino/messaging';
-import { Widget } from '@lumino/widgets';
-import { JUPYTER_IMARKDOWN_EXPR_CLASS } from './tokenize';
-
-class IMarkdownCell extends MarkdownCell {
-  private _d = 'null';
-  /**
-   * Construct a Markdown cell widget.
-   */
-  constructor(options: MarkdownCell.IOptions) {
-    super(options);
-    console.log(this._d);
-  }
-
-  /**
-   * Handle `after-attach` messages.
-   */
-  protected onAfterAttach(msg: Message): void {
-    console.log('Before onAfterAttach');
-    super.onAfterAttach(msg);
-    console.log('After onAfterAttach');
-  }
-
-  protected renderInput(widget: Widget) {
-    super.renderInput(widget);
-    const exprNodes = widget.node.querySelectorAll(
-      `.${JUPYTER_IMARKDOWN_EXPR_CLASS}`
-    );
-    console.log(exprNodes);
-  }
-}
+import { IMarkdownCell } from './cell';
 
 class IMarkdownContentFactory extends NotebookPanel.ContentFactory {
   /**
