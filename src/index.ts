@@ -62,14 +62,6 @@ async function loadUserExpressions(
   const model = cell.model as IMarkdownCellModel;
   const cellId = { cellId: model.id };
 
-  // Remove existing metadata
-  const existingMetadata = cell.model.metadata.get(
-    JUPYTER_IMARKDOWN_METADATA_NAME
-  ) as IXMarkdownCellMetadata;
-  if (existingMetadata !== undefined) {
-    existingMetadata.attachments.forEach(model.attachments.remove);
-  }
-
   // Populate request data
   console.log('Building expressions');
   const content: KernelMessage.IExecuteRequestMsg['content'] = {
