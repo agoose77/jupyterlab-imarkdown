@@ -3,14 +3,14 @@ import { Widget } from '@lumino/widgets';
 import { JUPYTER_IMARKDOWN_EXPR_CLASS } from './tokenize';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 
-export const JUPYTER_IMARKDOWN_METADATA_NAME = 'jupyter-imarkdown';
+export const JUPYTER_IMARKDOWN_METADATA_NAME = 'jupyterlab-imarkdown';
 
 export class IMarkdownCell extends MarkdownCell {
-  private _imRenderMime: IRenderMimeRegistry;
+  private _renderMime: IRenderMimeRegistry;
 
   constructor(options: MarkdownCell.IOptions) {
     super(options);
-    this._imRenderMime = options.rendermime;
+    this._renderMime = options.rendermime;
   }
 
   private _replaceExpressions(widget: Widget): void {
@@ -19,6 +19,7 @@ export class IMarkdownCell extends MarkdownCell {
       ...(this.model.metadata.get(JUPYTER_IMARKDOWN_METADATA_NAME) as any)
     };
     if (metadata.attachments === undefined) {
+      console.log('No metadat present!');
       return;
     }
     const exprNodes = widget.node.querySelectorAll(
@@ -45,7 +46,7 @@ export class IMarkdownCell extends MarkdownCell {
       }
 
       // Select preferred mimetype for bundle
-      const mimeType = this._imRenderMime.preferredMimeType(
+      const mimeType = this._renderMime.preferredMimeType(
         attachment.data,
         'any'
       );
@@ -55,8 +56,8 @@ export class IMarkdownCell extends MarkdownCell {
       }
 
       // Create renderer
-      const renderer = this._imRenderMime.createRenderer(mimeType);
-      const model = this._imRenderMime.createModel({ data: attachment.data });
+      const renderer = this._renderMime.createRenderer(mimeType);
+      const model = this._renderMime.createModel({ data: attachment.data });
 
       // Replace existing node
       const placeholder = exprNodes[i];
