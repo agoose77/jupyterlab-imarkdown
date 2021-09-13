@@ -2212,13 +2212,17 @@
         "affectsGlobalScope": false
       },
       "./src/tokenize.ts": {
-        "version": "8732246098e9e3c6d0799e1fc1056d7a87fad20d148436a214d50ba8f157cc9e",
+        "version": "7e667565589c10d5d7485c0e6405bcb9d7758ff729df552897f5c8f99f91ca77",
         "signature": "3d0255fe2b4da0f0e98618bfbf0ff27fab67b53381b2f2d11763d93ec1daec63",
         "affectsGlobalScope": false
       },
+      "./node_modules/@lumino/coreutils/src/json.ts": {
+        "version": "e13fdf04187b3ebd7457c5c6550562b9f3fec3c32e0220fc044ff326ae28b2b4",
+        "affectsGlobalScope": false
+      },
       "./src/cell.ts": {
-        "version": "0f0c7c7cbb857f096dbbe309746920807fca4616e9f8eabfba622c47ee0c2daf",
-        "signature": "48664bb0416f77df0accd632ec24e6d93170d74040c69737f2a053bf7ddeb753",
+        "version": "7db910ca7211323a747197e11c0035bbc78d74b3956e5d2cb75f4401a98583b1",
+        "signature": "a5ba72e61d4b762a781e822acd9a057633ea1f2f0b8dbf4795b7545bbf95b24c",
         "affectsGlobalScope": false
       },
       "./node_modules/@jupyterlab/application/lib/tokens.d.ts": {
@@ -2432,7 +2436,7 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "2c3797520c1813dda9125843e88686cbf3068bb438c1fc89df041b070b81c20f",
+        "version": "881321e89b1c486dacc7948dd04a9644db21296ab9efc6811e6fd2eb0365092e",
         "signature": "80abfe24d803f8a3964054f58785cfd2c53b03c2058d007fb5ee60a83136ecd4",
         "affectsGlobalScope": false
       }
@@ -4827,15 +4831,20 @@
       "./src/cell.ts": [
         "./node_modules/@jupyterlab/cells/lib/index.d.ts",
         "./node_modules/@jupyterlab/rendermime/lib/index.d.ts",
+        "./node_modules/@lumino/coreutils/src/json.ts",
+        "./node_modules/@lumino/coreutils/types/index.d.ts",
         "./node_modules/@lumino/widgets/types/index.d.ts",
         "./src/tokenize.ts"
       ],
       "./src/index.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
+        "./node_modules/@jupyterlab/apputils/lib/index.d.ts",
         "./node_modules/@jupyterlab/cells/lib/index.d.ts",
         "./node_modules/@jupyterlab/codeeditor/lib/index.d.ts",
         "./node_modules/@jupyterlab/notebook/lib/index.d.ts",
         "./node_modules/@jupyterlab/notebook/lib/widget.d.ts",
+        "./node_modules/@jupyterlab/services/lib/index.d.ts",
+        "./node_modules/@lumino/coreutils/src/json.ts",
         "./src/cell.ts",
         "./src/plugin.ts"
       ],
@@ -7213,6 +7222,7 @@
       ],
       "./src/cell.ts": [
         "./node_modules/@jupyterlab/cells/lib/index.d.ts",
+        "./node_modules/@lumino/coreutils/src/json.ts",
         "./node_modules/@lumino/widgets/types/index.d.ts"
       ],
       "./src/index.ts": [
@@ -7575,6 +7585,7 @@
       "./node_modules/@lumino/algorithm/types/zip.d.ts",
       "./node_modules/@lumino/application/types/index.d.ts",
       "./node_modules/@lumino/commands/types/index.d.ts",
+      "./node_modules/@lumino/coreutils/src/json.ts",
       "./node_modules/@lumino/coreutils/types/index.d.ts",
       "./node_modules/@lumino/coreutils/types/json.d.ts",
       "./node_modules/@lumino/coreutils/types/mime.d.ts",

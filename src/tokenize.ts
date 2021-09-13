@@ -60,10 +60,10 @@ function expressionPlugin(md: MarkdownIt): any {
     const expression = state.src.slice(startPos, stopPos);
     state.pos = pos;
 
-    const token = state.push('expr', 'input', 0);
-    token.attrSet('type', 'hidden');
-    token.attrSet('class', JUPYTER_IMARKDOWN_EXPR_CLASS);
-    token.attrSet('value', expression);
+    const exprToken = state.push('expr', 'input', 0);
+    exprToken.attrSet('type', 'hidden');
+    exprToken.attrSet('class', JUPYTER_IMARKDOWN_EXPR_CLASS);
+    exprToken.attrSet('value', expression);
 
     return true;
   }
