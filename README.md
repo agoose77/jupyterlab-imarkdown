@@ -4,11 +4,9 @@
 
 A JupyterLab extension.
 
-
-
 ## Requirements
 
-* JupyterLab >= 3.0
+- JupyterLab >= 3.0
 
 ## Install
 
@@ -25,7 +23,6 @@ To remove the extension, execute:
 ```bash
 pip uninstall jupyterlab_imarkdown
 ```
-
 
 ## Contributing
 
