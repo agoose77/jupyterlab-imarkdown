@@ -66,6 +66,7 @@ export class IMarkdownCell extends MarkdownCell {
       // FIXME: [HACK] Force inline
       renderer.renderModel(model).then(() => {
         renderer.node.style.display = 'inline';
+        renderer.node.style.paddingRight = '0';
       });
     }
   }
