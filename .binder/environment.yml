@@ -1,0 +1,23 @@
+# a mybinder.org-ready environment for demoing jupyterlab_markup
+# this environment may also be used locally on Linux/MacOS/Windows, e.g.
+#
+#   conda env update --file binder/environment.yml
+#   conda activate jupyterlab_markup-demo
+#
+name: jupyterlab_imarkdown-demo
+
+channels:
+  - conda-forge
+
+dependencies:
+  # runtime dependencies
+  - python >=3.8,<3.9.0a0
+  - jupyterlab >=3,<4.0.0a0
+  # labextension build dependencies
+  - jupyter-packaging
+  - nodejs >=14,<15
+  - pip
+  - wheel
+  - jupyterlab-markup >=1.0,<2.0
+  # additional packages for demos
+  - ipywidgets
