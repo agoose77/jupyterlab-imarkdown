@@ -1,8 +1,11 @@
 # jupyterlab_imarkdown
 
-![Github Actions Status](https://github.com/github_username/jupyterlab-imarkdown/workflows/Build/badge.svg)
+![Github Actions Status](https://github.com/agoose77/jupyterlab-imarkdown/workflows/Build/badge.svg)
 
 A JupyterLab extension.
+
+![preview](https://user-images.githubusercontent.com/1248413/133160417-95dfd03f-c0d5-43a3-8e1c-f3ae75949a8b.gif)
+
 
 ## Requirements
 
