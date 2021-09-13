@@ -2206,6 +2206,96 @@
         "signature": "810d840d5ace94f74be1ff4c3783debe8e58432772038c355eb7736cf971a8b4",
         "affectsGlobalScope": false
       },
+      "./node_modules/@types/linkify-it/index.d.ts": {
+        "version": "6503fb6addf62f9b10f8564d9869ad824565a914ec1ac3dd7d13da14a3f57036",
+        "signature": "6503fb6addf62f9b10f8564d9869ad824565a914ec1ac3dd7d13da14a3f57036",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/token.d.ts": {
+        "version": "9ff77f7cddf7f2d18d581befa02be977e929f9bba2945975cd475c5ea1121779",
+        "signature": "9ff77f7cddf7f2d18d581befa02be977e929f9bba2945975cd475c5ea1121779",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/rules_core/state_core.d.ts": {
+        "version": "b4b5118a66409a1f038317a7d84c9f2a40e59073cfd1812e8f25108b49e5d090",
+        "signature": "b4b5118a66409a1f038317a7d84c9f2a40e59073cfd1812e8f25108b49e5d090",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/rules_block/state_block.d.ts": {
+        "version": "4477c34fb65c298de575901e09c1a07bb72f256e035534b8d8c36cb9a88ab26f",
+        "signature": "4477c34fb65c298de575901e09c1a07bb72f256e035534b8d8c36cb9a88ab26f",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/rules_inline/state_inline.d.ts": {
+        "version": "38c22c0a1eef86d85cfa65f5595518000737bcd375e144d989a244fbb96fbc8d",
+        "signature": "38c22c0a1eef86d85cfa65f5595518000737bcd375e144d989a244fbb96fbc8d",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/ruler.d.ts": {
+        "version": "d61c957e12422610f841dc43acce323fe465efb2f93e550fb1b8067b5d912d15",
+        "signature": "d61c957e12422610f841dc43acce323fe465efb2f93e550fb1b8067b5d912d15",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/parser_core.d.ts": {
+        "version": "2cd94032afa12afa1b30c60a1d4c5f8eec60bfe1685db515fb5df91554d0e92d",
+        "signature": "2cd94032afa12afa1b30c60a1d4c5f8eec60bfe1685db515fb5df91554d0e92d",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/parser_block.d.ts": {
+        "version": "233ee9b386332a630eb490287b2c96a0aaee89345746db577360882f2ea365c0",
+        "signature": "233ee9b386332a630eb490287b2c96a0aaee89345746db577360882f2ea365c0",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/parser_inline.d.ts": {
+        "version": "f6b1170ee583cba2a4c585fae21ca9bb92e23a8b6bf1b9f432a8d567e5858dfc",
+        "signature": "f6b1170ee583cba2a4c585fae21ca9bb92e23a8b6bf1b9f432a8d567e5858dfc",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/renderer.d.ts": {
+        "version": "6ab11a659321ed2a2f7cadb2e3dc610f65fbc20726b0989cff60811f6576e70c",
+        "signature": "6ab11a659321ed2a2f7cadb2e3dc610f65fbc20726b0989cff60811f6576e70c",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/lib/index.d.ts": {
+        "version": "c2e2d29225c37307cfe2e6c6b4eaefb69575e101633e494d7a325baf53f3fca7",
+        "signature": "c2e2d29225c37307cfe2e6c6b4eaefb69575e101633e494d7a325baf53f3fca7",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/markdown-it/index.d.ts": {
+        "version": "cf963f97022b2f1092e68eaf0b9bc7c1396af8fd943a35ca7fd1a74625013f6a",
+        "signature": "cf963f97022b2f1092e68eaf0b9bc7c1396af8fd943a35ca7fd1a74625013f6a",
+        "affectsGlobalScope": false
+      },
+      "./src/tokenize.ts": {
+        "version": "1ddee32b990cc93ffddce7c2c1c52c72e28d69733e1ac1dd6593fd87ead40f05",
+        "signature": "342e2600021194ed4a60e0982d260aef29057d419ecb0886c236b3d4d6d0b8b4",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@agoose77/jupyterlab-markup/lib/widgets.d.ts": {
+        "version": "45321c5f2a0af97d5d060eee466c93734e4bf4abe985f18aa041bcb1c42ad525",
+        "signature": "45321c5f2a0af97d5d060eee466c93734e4bf4abe985f18aa041bcb1c42ad525",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts": {
+        "version": "efc8446dea7657219f004f8f0c99c2ef7afe695234a6c6da379bd2388998dea7",
+        "signature": "efc8446dea7657219f004f8f0c99c2ef7afe695234a6c6da379bd2388998dea7",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@agoose77/jupyterlab-markup/lib/utils.d.ts": {
+        "version": "38f94b78e808175d709b99dccafa765ac10049f031d7dc52e3865105619e37e8",
+        "signature": "38f94b78e808175d709b99dccafa765ac10049f031d7dc52e3865105619e37e8",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@agoose77/jupyterlab-markup/lib/index.d.ts": {
+        "version": "1db0a28469bdc6ab4909493fe91cc7ab331246372201711e421c072b5f9f11f8",
+        "signature": "1db0a28469bdc6ab4909493fe91cc7ab331246372201711e421c072b5f9f11f8",
+        "affectsGlobalScope": false
+      },
+      "./src/plugin.ts": {
+        "version": "283311e4f8cb26c6d21755e09e940ad404d67523dbd9f4e1e3318993d7b17111",
+        "signature": "e50518719f65615f130cac4f02c05723de0168ccbfe3ff3fc484ce8c7b61e6bf",
+        "affectsGlobalScope": false
+      },
       "./node_modules/@jupyterlab/outputarea/lib/model.d.ts": {
         "version": "d650e233e653a0952826564dc5912e5eb9bca7bf34a4b520142e90c609309955",
         "signature": "d650e233e653a0952826564dc5912e5eb9bca7bf34a4b520142e90c609309955",
@@ -2337,73 +2427,8 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "243dd0ea361ba2ab6286bee1f9d61adfe7a81623f447b3efc41bb013ead9428c",
+        "version": "a9890df02e9365be0fea8d6e1b56f61187826fc5ed9643cd16c5c75106bd3705",
         "signature": "80abfe24d803f8a3964054f58785cfd2c53b03c2058d007fb5ee60a83136ecd4",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/linkify-it/index.d.ts": {
-        "version": "6503fb6addf62f9b10f8564d9869ad824565a914ec1ac3dd7d13da14a3f57036",
-        "signature": "6503fb6addf62f9b10f8564d9869ad824565a914ec1ac3dd7d13da14a3f57036",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/token.d.ts": {
-        "version": "9ff77f7cddf7f2d18d581befa02be977e929f9bba2945975cd475c5ea1121779",
-        "signature": "9ff77f7cddf7f2d18d581befa02be977e929f9bba2945975cd475c5ea1121779",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/rules_core/state_core.d.ts": {
-        "version": "b4b5118a66409a1f038317a7d84c9f2a40e59073cfd1812e8f25108b49e5d090",
-        "signature": "b4b5118a66409a1f038317a7d84c9f2a40e59073cfd1812e8f25108b49e5d090",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/rules_block/state_block.d.ts": {
-        "version": "4477c34fb65c298de575901e09c1a07bb72f256e035534b8d8c36cb9a88ab26f",
-        "signature": "4477c34fb65c298de575901e09c1a07bb72f256e035534b8d8c36cb9a88ab26f",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/rules_inline/state_inline.d.ts": {
-        "version": "38c22c0a1eef86d85cfa65f5595518000737bcd375e144d989a244fbb96fbc8d",
-        "signature": "38c22c0a1eef86d85cfa65f5595518000737bcd375e144d989a244fbb96fbc8d",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/ruler.d.ts": {
-        "version": "d61c957e12422610f841dc43acce323fe465efb2f93e550fb1b8067b5d912d15",
-        "signature": "d61c957e12422610f841dc43acce323fe465efb2f93e550fb1b8067b5d912d15",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/parser_core.d.ts": {
-        "version": "2cd94032afa12afa1b30c60a1d4c5f8eec60bfe1685db515fb5df91554d0e92d",
-        "signature": "2cd94032afa12afa1b30c60a1d4c5f8eec60bfe1685db515fb5df91554d0e92d",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/parser_block.d.ts": {
-        "version": "233ee9b386332a630eb490287b2c96a0aaee89345746db577360882f2ea365c0",
-        "signature": "233ee9b386332a630eb490287b2c96a0aaee89345746db577360882f2ea365c0",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/parser_inline.d.ts": {
-        "version": "f6b1170ee583cba2a4c585fae21ca9bb92e23a8b6bf1b9f432a8d567e5858dfc",
-        "signature": "f6b1170ee583cba2a4c585fae21ca9bb92e23a8b6bf1b9f432a8d567e5858dfc",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/renderer.d.ts": {
-        "version": "6ab11a659321ed2a2f7cadb2e3dc610f65fbc20726b0989cff60811f6576e70c",
-        "signature": "6ab11a659321ed2a2f7cadb2e3dc610f65fbc20726b0989cff60811f6576e70c",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/lib/index.d.ts": {
-        "version": "c2e2d29225c37307cfe2e6c6b4eaefb69575e101633e494d7a325baf53f3fca7",
-        "signature": "c2e2d29225c37307cfe2e6c6b4eaefb69575e101633e494d7a325baf53f3fca7",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/markdown-it/index.d.ts": {
-        "version": "cf963f97022b2f1092e68eaf0b9bc7c1396af8fd943a35ca7fd1a74625013f6a",
-        "signature": "cf963f97022b2f1092e68eaf0b9bc7c1396af8fd943a35ca7fd1a74625013f6a",
-        "affectsGlobalScope": false
-      },
-      "./src/tokenize.ts": {
-        "version": "da4c16e6671af8c88fa49ea9b9b2b7ea201538cf6400278d8dd35f914d0090f0",
-        "signature": "6c0d2212cb132f39d920e573aca3b9e2d4ece9cee4c84126555c91cb42dff79c",
         "affectsGlobalScope": false
       }
     },
@@ -2431,6 +2456,26 @@
       "configFilePath": "./tsconfig.json"
     },
     "referencedMap": {
+      "./node_modules/@agoose77/jupyterlab-markup/lib/index.d.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts",
+        "./node_modules/@agoose77/jupyterlab-markup/lib/utils.d.ts"
+      ],
+      "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/widgets.d.ts",
+        "./node_modules/@lumino/coreutils/types/index.d.ts",
+        "./node_modules/@types/markdown-it/index.d.ts"
+      ],
+      "./node_modules/@agoose77/jupyterlab-markup/lib/utils.d.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts",
+        "./node_modules/@jupyterlab/application/lib/index.d.ts"
+      ],
+      "./node_modules/@agoose77/jupyterlab-markup/lib/widgets.d.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts",
+        "./node_modules/@jupyterlab/rendermime-interfaces/lib/index.d.ts",
+        "./node_modules/@jupyterlab/rendermime/lib/index.d.ts",
+        "./node_modules/@lumino/messaging/types/index.d.ts",
+        "./node_modules/@types/markdown-it/index.d.ts"
+      ],
       "./node_modules/@blueprintjs/colors/lib/index.d.ts": [
         "./node_modules/@blueprintjs/colors/lib/colors.d.ts"
       ],
@@ -4776,14 +4821,41 @@
       ],
       "./src/index.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts",
+        "./node_modules/@jupyterlab/cells/lib/index.d.ts",
         "./node_modules/@jupyterlab/codeeditor/lib/index.d.ts",
-        "./node_modules/@jupyterlab/notebook/lib/index.d.ts"
+        "./node_modules/@jupyterlab/notebook/lib/index.d.ts",
+        "./node_modules/@jupyterlab/notebook/lib/widget.d.ts",
+        "./src/plugin.ts"
+      ],
+      "./src/plugin.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/index.d.ts",
+        "./src/tokenize.ts"
       ],
       "./src/tokenize.ts": [
         "./node_modules/@types/markdown-it/index.d.ts"
       ]
     },
     "exportedModulesMap": {
+      "./node_modules/@agoose77/jupyterlab-markup/lib/index.d.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts",
+        "./node_modules/@agoose77/jupyterlab-markup/lib/utils.d.ts"
+      ],
+      "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/widgets.d.ts",
+        "./node_modules/@lumino/coreutils/types/index.d.ts",
+        "./node_modules/@types/markdown-it/index.d.ts"
+      ],
+      "./node_modules/@agoose77/jupyterlab-markup/lib/utils.d.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts",
+        "./node_modules/@jupyterlab/application/lib/index.d.ts"
+      ],
+      "./node_modules/@agoose77/jupyterlab-markup/lib/widgets.d.ts": [
+        "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts",
+        "./node_modules/@jupyterlab/rendermime-interfaces/lib/index.d.ts",
+        "./node_modules/@jupyterlab/rendermime/lib/index.d.ts",
+        "./node_modules/@lumino/messaging/types/index.d.ts",
+        "./node_modules/@types/markdown-it/index.d.ts"
+      ],
       "./node_modules/@blueprintjs/colors/lib/index.d.ts": [
         "./node_modules/@blueprintjs/colors/lib/colors.d.ts"
       ],
@@ -7130,11 +7202,18 @@
       "./src/index.ts": [
         "./node_modules/@jupyterlab/application/lib/index.d.ts"
       ],
+      "./src/plugin.ts": [
+        "./node_modules/@jupyterlab/application/lib/index.d.ts"
+      ],
       "./src/tokenize.ts": [
         "./node_modules/@types/markdown-it/index.d.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
+      "./node_modules/@agoose77/jupyterlab-markup/lib/index.d.ts",
+      "./node_modules/@agoose77/jupyterlab-markup/lib/tokens.d.ts",
+      "./node_modules/@agoose77/jupyterlab-markup/lib/utils.d.ts",
+      "./node_modules/@agoose77/jupyterlab-markup/lib/widgets.d.ts",
       "./node_modules/@blueprintjs/colors/lib/colors.d.ts",
       "./node_modules/@blueprintjs/colors/lib/index.d.ts",
       "./node_modules/@blueprintjs/core/lib/cjs/common/abstractComponent.d.ts",
@@ -7615,6 +7694,7 @@
       "./node_modules/yjs/dist/src/utils/logging.d.ts",
       "./node_modules/yjs/dist/src/utils/updates.d.ts",
       "./src/index.ts",
+      "./src/plugin.ts",
       "./src/tokenize.ts"
     ]
   },

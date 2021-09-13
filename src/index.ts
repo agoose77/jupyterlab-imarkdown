@@ -2,9 +2,30 @@ import {JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterlab/application';
 import {plugin} from "./plugin"
 import {NotebookPanel} from '@jupyterlab/notebook';
 import {IEditorServices} from '@jupyterlab/codeeditor';
+import {MarkdownCell} from "@jupyterlab/cells";
+import {StaticNotebook} from "@jupyterlab/notebook/lib/widget";
+
+
+class IMarkdownCell extends MarkdownCell {
+
+}
 
 
 class IMarkdownContentFactory extends NotebookPanel.ContentFactory {
+  /**
+   * Create a new markdown cell widget.
+   *
+   * #### Notes
+   * If no cell content factory is passed in with the options, the one on the
+   * notebook content factory is used.
+   */
+  createMarkdownCell(options: MarkdownCell.IOptions, parent: StaticNotebook): MarkdownCell {
+    if (!options.contentFactory) {
+      options.contentFactory = this;
+    }
+    return new IMarkdownCell(options).initializeState();
+  }
+
 
 }
 
