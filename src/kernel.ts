@@ -41,8 +41,9 @@ export async function loadUserExpressions(
     // Store results as attachments
     for (const key in content.user_expressions) {
       const result = content.user_expressions[key]! as PartialJSONObject;
+      console.log({ key, result });
+
       const data = result['data'];
-      console.log({ key, data });
       if (data === undefined) {
         continue;
       }

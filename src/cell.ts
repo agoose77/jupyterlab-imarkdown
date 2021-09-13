@@ -51,12 +51,17 @@ export class XMarkdownCell extends MarkdownCell {
   }
 
   private _postProcessRenderer(renderer: IRenderMime.IRenderer): void {
+    console.log('Post process renderer', renderer);
     // FIXME: [HACK] Force inline
     renderer.node.style.display = 'inline';
     renderer.node.style.paddingRight = '0';
   }
 
-  public renderExpressions() {
+  /**
+   * Update rendered expressions from current attachment MIME-bundles
+   */
+  public renderExpressions(): void {
+    console.log(this.model.attachments);
     // Loop over expressions and render them from the cell attachments
     for (const name in this.__expressions) {
       const attachment = this.model.attachments.get(name);
