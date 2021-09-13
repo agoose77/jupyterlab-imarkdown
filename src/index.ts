@@ -12,7 +12,7 @@ import {
 import { IEditorServices } from '@jupyterlab/codeeditor';
 import { Cell, MarkdownCell } from '@jupyterlab/cells';
 import { StaticNotebook } from '@jupyterlab/notebook/lib/widget';
-import { XMarkdownCell } from './cell';
+import { JUPYTER_IMARKDOWN_EXPRESSION_PREFIX, XMarkdownCell } from './cell';
 import { loadUserExpressions } from './kernel';
 
 class IXMarkdownContentFactory extends NotebookPanel.ContentFactory {
@@ -53,6 +53,15 @@ function isMarkdownCell(cell: Cell): cell is XMarkdownCell {
   return cell.model.type === 'markdown';
 }
 
+function removeKernelAttachments(cell: XMarkdownCell) {
+  const attachments = cell.model.attachments;
+  attachments.keys
+    .filter(key => {
+      key.startsWith(JUPYTER_IMARKDOWN_EXPRESSION_PREFIX);
+    })
+    .map(attachments.remove);
+}
+
 /**
  * The notebook cell executor.
  */
@@ -84,6 +93,8 @@ const executor: JupyterFrontEndPlugin<void> = {
         console.log('Waiting for cell to render!');
 
         cell.doneRendering.then(() => {
+          // Clear existing cell attachments
+          removeKernelAttachments(cell);
           console.log('Loading expressions from kernel');
           loadUserExpressions(cell, ctx).then(() => {
             console.log('Re-rendering!');
