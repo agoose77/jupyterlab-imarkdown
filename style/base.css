@@ -1,0 +1,19 @@
+.im-output {
+    display: inline;
+}
+
+.im-output.jp-RenderedText {
+    padding-left: initial;
+}
+
+.im-output.jp-RenderedText > pre {
+    display: inline;
+}
+
+.im-output > .widget-inline-hbox {
+    display: inline-flex;
+}
+
+.im-output > .widget-inline-vbox {
+    display: inline-flex;
+}

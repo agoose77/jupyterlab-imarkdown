@@ -5,6 +5,7 @@ import { IRenderMimeRegistry, IRenderMime } from '@jupyterlab/rendermime';
 import { PromiseDelegate } from '@lumino/coreutils';
 
 export const JUPYTER_IMARKDOWN_EXPRESSION_PREFIX = 'jupyterlab-imarkdown';
+export const JUPYTER_IMARKDOWN_OUTPUT_CLASS = 'im-output';
 
 interface IExpressionMap {
   [name: string]: string;
@@ -52,9 +53,7 @@ export class XMarkdownCell extends MarkdownCell {
 
   private _postProcessRenderer(renderer: IRenderMime.IRenderer): void {
     console.log('Post process renderer', renderer);
-    // FIXME: [HACK] Force inline
-    renderer.node.style.display = 'inline';
-    renderer.node.style.paddingRight = '0';
+    renderer.addClass(JUPYTER_IMARKDOWN_OUTPUT_CLASS);
   }
 
   /**
