@@ -113,7 +113,7 @@ export class XMarkdownCell extends MarkdownCell {
     });
   }
 
-  protected renderInput(widget: Widget) {
+  protected renderInput(widget: Widget): void {
     // FIXME: `renderInput` is called without waiting for render future to finish
     // Therefore, this is sometimes executed before the DOM is updated.
     super.renderInput(widget);
@@ -127,7 +127,7 @@ export class XMarkdownCell extends MarkdownCell {
         this._identifyExpressions(widget);
         this.renderExpressions();
         console.log('Rendering done!');
-        this.__doneRendering!.resolve();
+        this.__doneRendering.resolve();
       });
       this.__lastContent = currentContent;
     }
@@ -145,10 +145,9 @@ export class XMarkdownCell extends MarkdownCell {
     this.__expressions = {};
     this.__placeholders = {};
     exprInputNodes.forEach((node: Element, index: number) => {
-      let inode = node as HTMLInputElement;
       const name = `${JUPYTER_IMARKDOWN_EXPRESSION_PREFIX}-${index}`;
-      this.__expressions[name] = inode.value;
-      this.__placeholders[name] = inode;
+      this.__expressions[name] = (node as HTMLInputElement).value;
+      this.__placeholders[name] = node;
     });
     console.log('Found expressions', this.__expressions, this.__placeholders);
   }
