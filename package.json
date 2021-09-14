@@ -85,7 +85,6 @@
     "extension": true,
     "outputDir": "jupyterlab_imarkdown/labextension",
     "disabledExtensions": [
-      "@jupyterlab/notebook-extension:factory"
     ],
     "sharedPackages": {
       "@agoose77/jupyterlab-markup": {
