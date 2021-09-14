@@ -119,7 +119,10 @@ export class XMarkdownCell extends MarkdownCell {
 
     const currentContent = this.model.value.text;
     // If the content has changed
-    if (this.__lastContent !== currentContent) {
+    if (
+      this.__lastContent !== undefined &&
+      this.__lastContent !== currentContent
+    ) {
       this.__doneRendering = new PromiseDelegate<void>();
       // Store parsed expressions
       this._waitForRender(widget, 10).then(() => {
