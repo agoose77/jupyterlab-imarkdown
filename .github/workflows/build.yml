@@ -47,6 +47,7 @@ jobs:
     - name: Test the extension
       run: |
         set -eux
+        python -m pip install jupyterlab~=3.0
         jlpm
         jlpm run eslint:check
 
