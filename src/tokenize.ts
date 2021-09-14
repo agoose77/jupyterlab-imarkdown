@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 
-export const JUPYTER_IMARKDOWN_EXPR_CLASS = 'jupyter-imarkdown-expr';
+export const JUPYTER_IMARKDOWN_EXPR_CLASS = 'im-expr';
 
 // Skip char codes from given position
 function skipChars(state: any, pos: number, code: number): number {
