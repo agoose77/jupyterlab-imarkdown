@@ -5,12 +5,14 @@
 [binder-badge]: https://mybinder.org/badge_logo.svg
 [binder]: https://mybinder.org/v2/gh/agoose77/jupyterlab-imarkdown.git/master?urlpath=lab
 
+
 A JupyterLab extension to embed rich output in Markdown cells, e.g.
 ```markdown
 The current value of x is {{ x }}
 ```
 
 ![preview](https://user-images.githubusercontent.com/1248413/133160417-95dfd03f-c0d5-43a3-8e1c-f3ae75949a8b.gif)
+
 
 ## Requirements
 
