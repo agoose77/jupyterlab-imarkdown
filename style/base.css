@@ -10,10 +10,7 @@
     display: inline;
 }
 
-.im-output > .widget-inline-hbox {
-    display: inline-flex;
-}
-
+.im-output > .widget-inline-hbox,
 .im-output > .widget-inline-vbox {
     display: inline-flex;
 }
