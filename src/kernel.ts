@@ -2,7 +2,7 @@ import { XMarkdownCell } from './cell';
 import { ISessionContext } from '@jupyterlab/apputils';
 import { IMarkdownCellModel } from '@jupyterlab/cells';
 import { KernelMessage } from '@jupyterlab/services';
-import { PartialJSONObject } from '@lumino/coreutils/src/json';
+import { PartialJSONObject } from '@lumino/coreutils';
 
 export async function loadUserExpressions(
   cell: XMarkdownCell,

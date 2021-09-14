@@ -7,11 +7,11 @@ import {
   INotebookTracker,
   Notebook,
   NotebookActions,
-  NotebookPanel
+  NotebookPanel,
+  StaticNotebook
 } from '@jupyterlab/notebook';
 import { IEditorServices } from '@jupyterlab/codeeditor';
 import { Cell, MarkdownCell } from '@jupyterlab/cells';
-import { StaticNotebook } from '@jupyterlab/notebook/lib/widget';
 import { JUPYTER_IMARKDOWN_EXPRESSION_PREFIX, XMarkdownCell } from './cell';
 import { loadUserExpressions } from './kernel';
 
