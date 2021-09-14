@@ -44,6 +44,12 @@ jobs:
     - name: Check manifest
       run: pipx run check-manifest
 
+    - name: Test the extension
+      run: |
+        set -eux
+        jlpm
+        jlpm run eslint:check
+
     - name: Build SDist & wheel
       run: pipx run --spec build pyproject-build
 
@@ -72,4 +78,4 @@ jobs:
         set -eux
         pip install *.whl jupyterlab
         jupyter labextension list 2>&1 | grep -ie "jupyterlab-imarkdown.*OK"
-        python -m jupyterlab.browser_check --no-chrome-test
+        python -m jupyterlab.browser_check
