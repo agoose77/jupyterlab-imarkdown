@@ -1,19 +1,30 @@
-.im-output {
-    display: inline;
+.im-output-result {
+  display: inline;
 }
 
-.im-output.jp-RenderedText {
-    padding-left: initial;
+.im-output-result.jp-RenderedText {
+  padding-left: initial;
 }
 
-.im-output.jp-RenderedText > pre {
-    display: inline;
+.im-output-result.jp-RenderedText > pre {
+  display: inline;
 }
 
-.im-output > .widget-inline-hbox {
-    display: inline-flex;
+.im-output-result > .widget-inline-hbox,
+.im-output-result > .widget-inline-vbox {
+  display: inline-flex;
 }
 
-.im-output > .widget-inline-vbox {
-    display: inline-flex;
+/* style taken from ipywidgets/packages/base/css/index.css */
+.im-output-missing::before {
+  content: '\f127'; /* chain-broken */
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #d9534f;
+  padding: 3px;
+  align-self: flex-start;
 }

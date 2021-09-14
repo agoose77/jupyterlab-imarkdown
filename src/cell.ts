@@ -6,6 +6,8 @@ import { PromiseDelegate } from '@lumino/coreutils';
 
 export const JUPYTER_IMARKDOWN_EXPRESSION_PREFIX = 'jupyterlab-imarkdown';
 export const JUPYTER_IMARKDOWN_OUTPUT_CLASS = 'im-output';
+export const JUPYTER_IMARKDOWN_OUTPUT_RESULT_CLASS = 'im-output-result';
+export const JUPYTER_IMARKDOWN_OUTPUT_MISSING_CLASS = 'im-output-missing';
 
 interface IExpressionMap {
   [name: string]: string;
@@ -42,55 +44,65 @@ export class XMarkdownCell extends MarkdownCell {
     return this.__doneRendering.promise;
   }
 
-  private _updatePlaceholder(
-    name: string,
-    renderer: IRenderMime.IRenderer
-  ): void {
+  private _updatePlaceholder(name: string, node: Element): void {
     const placeholder = this.__placeholders[name];
-    placeholder.parentNode?.replaceChild(renderer.node, placeholder);
-    this.__placeholders[name] = renderer.node;
+    placeholder.parentNode?.replaceChild(node, placeholder);
+    this.__placeholders[name] = node;
   }
 
   private _postProcessRenderer(renderer: IRenderMime.IRenderer): void {
     console.log('Post process renderer', renderer);
     renderer.addClass(JUPYTER_IMARKDOWN_OUTPUT_CLASS);
+    renderer.addClass(JUPYTER_IMARKDOWN_OUTPUT_RESULT_CLASS);
+  }
+
+  protected _getExpressionOutput(name: string): Element | null {
+    const attachment = this.model.attachments.get(name);
+    // We need an attachment!
+    if (attachment === undefined) {
+      console.log(`Couldn't find attachment ${name}`);
+      return null;
+    }
+
+    // FIXME: choose appropriate value for `safe`
+    // Select preferred mimetype for bundle
+    const mimeType = this.__rendermime.preferredMimeType(
+      attachment.data,
+      'any'
+    );
+    if (mimeType === undefined) {
+      console.log(`Couldn't find mimetype for ${name}`);
+      return null;
+    }
+
+    // Create renderer
+    const renderer = this.__rendermime.createRenderer(mimeType);
+    const model = this.__rendermime.createModel({ data: attachment.data });
+
+    renderer.renderModel(model).then(() => {
+      this._postProcessRenderer(renderer);
+    });
+
+    return renderer.node;
   }
 
   /**
    * Update rendered expressions from current attachment MIME-bundles
    */
   public renderExpressions(): void {
-    console.log(this.model.attachments);
+    console.log('renderExpression', this.__expressions);
     // Loop over expressions and render them from the cell attachments
     for (const name in this.__expressions) {
-      const attachment = this.model.attachments.get(name);
-      // We need an attachment!
-      if (attachment === undefined) {
-        console.log(`Couldn't find attachment ${name}`);
-        continue;
+      let node = this._getExpressionOutput(name);
+      if (node === null) {
+        // Create "missing" output by default
+        node = document.createElement('span');
+        node.classList.add(JUPYTER_IMARKDOWN_OUTPUT_CLASS);
+        node.classList.add(JUPYTER_IMARKDOWN_OUTPUT_MISSING_CLASS);
       }
-
-      // FIXME: choose appropriate value for `safe`
-      // Select preferred mimetype for bundle
-      const mimeType = this.__rendermime.preferredMimeType(
-        attachment.data,
-        'any'
-      );
-      if (mimeType === undefined) {
-        console.log(`Couldn't find mimetype for ${name}`);
-        continue;
-      }
-
-      // Create renderer
-      const renderer = this.__rendermime.createRenderer(mimeType);
-      const model = this.__rendermime.createModel({ data: attachment.data });
-
-      renderer.renderModel(model).then(() => {
-        this._postProcessRenderer(renderer);
-      });
 
       // Replace existing node
-      this._updatePlaceholder(name, renderer);
+      this._updatePlaceholder(name, node);
     }
   }
 
@@ -128,7 +140,7 @@ export class XMarkdownCell extends MarkdownCell {
       this._waitForRender(widget, 10).then(() => {
         this._identifyExpressions(widget);
         this.renderExpressions();
-        console.log('Rendering done!');
+        console.log(`Rendering done!`);
         this.__doneRendering.resolve();
       });
       this.__lastContent = currentContent;
