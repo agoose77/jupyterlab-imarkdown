@@ -15,7 +15,7 @@ import { StaticNotebook } from '@jupyterlab/notebook/lib/widget';
 import { JUPYTER_IMARKDOWN_EXPRESSION_PREFIX, XMarkdownCell } from './cell';
 import { loadUserExpressions } from './kernel';
 
-class IXMarkdownContentFactory extends NotebookPanel.ContentFactory {
+class XMarkdownContentFactory extends NotebookPanel.ContentFactory {
   /**
    * Create a new markdown cell widget.
    *
@@ -45,7 +45,7 @@ const factory: JupyterFrontEndPlugin<NotebookPanel.IContentFactory> = {
   activate: (app: JupyterFrontEnd, editorServices: IEditorServices) => {
     console.log('Using jupyterlab-imarkdown:editor');
     const editorFactory = editorServices.factoryService.newInlineEditor;
-    return new IXMarkdownContentFactory({ editorFactory });
+    return new XMarkdownContentFactory({ editorFactory });
   }
 };
 
