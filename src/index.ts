@@ -12,7 +12,7 @@ import {
 } from '@jupyterlab/notebook';
 import { IEditorServices } from '@jupyterlab/codeeditor';
 import { Cell, MarkdownCell } from '@jupyterlab/cells';
-import { JUPYTER_IMARKDOWN_EXPRESSION_PREFIX, XMarkdownCell } from './cell';
+import { ATTACHMENT_PREFIX, XMarkdownCell } from './cell';
 import { loadUserExpressions } from './kernel';
 
 class XMarkdownContentFactory extends NotebookPanel.ContentFactory {
@@ -57,7 +57,7 @@ function removeKernelAttachments(cell: XMarkdownCell) {
   const attachments = cell.model.attachments;
   attachments.keys
     .filter(key => {
-      key.startsWith(JUPYTER_IMARKDOWN_EXPRESSION_PREFIX);
+      key.startsWith(ATTACHMENT_PREFIX);
     })
     .map(attachments.remove);
 }
@@ -86,18 +86,19 @@ const executor: JupyterFrontEndPlugin<void> = {
           return;
         }
         // Load the user expressions for the given cell.
-        console.log(`Execution of ${cell.id} in ${ctx.session?.id}`);
         if (!isMarkdownCell(cell)) {
           return;
         }
-        console.log('Waiting for cell to render!');
+        console.log(
+          'Markdown cell was executed, waiting for render to complete ...'
+        );
 
         cell.doneRendering.then(() => {
-          // Clear existing cell attachments
+          console.log('Clearing results from cell attachments');
           removeKernelAttachments(cell);
-          console.log('Loading expressions from kernel');
+          console.log('Loading results from kernel');
           loadUserExpressions(cell, ctx).then(() => {
-            console.log('Re-rendering!');
+            console.log('Re-rendering cell!');
             cell.renderExpressions();
           });
         });

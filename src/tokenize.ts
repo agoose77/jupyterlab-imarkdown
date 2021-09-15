@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 
-export const JUPYTER_IMARKDOWN_EXPR_CLASS = 'im-expr';
+export const EXPR_CLASS = 'im-expr';
 
 // Skip char codes from given position
 function skipChars(state: any, pos: number, code: number): number {
@@ -62,7 +62,7 @@ function expressionPlugin(md: MarkdownIt): any {
 
     const exprToken = state.push('expr', 'input', 0);
     exprToken.attrSet('type', 'hidden');
-    exprToken.attrSet('class', JUPYTER_IMARKDOWN_EXPR_CLASS);
+    exprToken.attrSet('class', EXPR_CLASS);
     exprToken.attrSet('value', expression);
 
     return true;
