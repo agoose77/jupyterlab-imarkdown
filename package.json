@@ -53,14 +53,21 @@
   "dependencies": {
     "@agoose77/jupyterlab-markup": "^1.0.0",
     "@jupyterlab/application": "^3.1.0",
+    "@jupyterlab/apputils": "^3.1.0",
+    "@jupyterlab/cells": "^3.1.0",
+    "@jupyterlab/codeeditor": "^3.1.0",
     "@jupyterlab/notebook": "^3.1.0",
+    "@jupyterlab/rendermime": "^3.1.0",
+    "@jupyterlab/services": "^6.1.0",
+    "@lumino/coreutils": "^1.8.2",
+    "@lumino/widgets": "^1.26.2",
     "markdown-it": "^10.0.0"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.1.0",
+    "@types/markdown-it": "^0.0.9",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
-    "@types/markdown-it": "^0.0.9",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
