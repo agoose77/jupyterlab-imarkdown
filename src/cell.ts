@@ -1,13 +1,23 @@
 import { MarkdownCell } from '@jupyterlab/cells';
 import { Widget } from '@lumino/widgets';
-import { JUPYTER_IMARKDOWN_EXPR_CLASS } from './tokenize';
-import { IRenderMimeRegistry, IRenderMime } from '@jupyterlab/rendermime';
+import { EXPR_CLASS } from './tokenize';
+import { IRenderMime, IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { PromiseDelegate } from '@lumino/coreutils';
+import {
+  ERROR_MIMETYPE,
+  IExpressionResult,
+  isOutput,
+  OUTPUT_MIMETYPE
+} from './attachment';
 
-export const JUPYTER_IMARKDOWN_EXPRESSION_PREFIX = 'jupyterlab-imarkdown';
-export const JUPYTER_IMARKDOWN_OUTPUT_CLASS = 'im-output';
-export const JUPYTER_IMARKDOWN_OUTPUT_RESULT_CLASS = 'im-output-result';
-export const JUPYTER_IMARKDOWN_OUTPUT_MISSING_CLASS = 'im-output-missing';
+// Name prefix for cell attachments
+export const ATTACHMENT_PREFIX = 'jupyterlab-imarkdown';
+// Base CSS class for jupyterlab-imarkdown outputs
+export const RENDERED_CLASS = 'im-rendered';
+// CSS class for execution-result outputs
+export const RESULT_CLASS = 'im-result';
+// CSS class for missing outputs
+export const ERROR_CLASS = 'im-error';
 
 interface IExpressionMap {
   [name: string]: string;
@@ -44,73 +54,119 @@ export class XMarkdownCell extends MarkdownCell {
     return this.__doneRendering.promise;
   }
 
-  private _updatePlaceholder(name: string, node: Element): void {
-    const placeholder = this.__placeholders[name];
-    placeholder.parentNode?.replaceChild(node, placeholder);
-    this.__placeholders[name] = node;
-  }
+  /**
+   * Create an IRenderMime.IMimeModel for a given IExpressionResult
+   */
+  protected _createExpressionResultModel(
+    payload: IExpressionResult
+  ): IRenderMime.IMimeModel {
+    let options: any;
 
-  private _postProcessRenderer(renderer: IRenderMime.IRenderer): void {
-    console.log('Post process renderer', renderer);
-    renderer.addClass(JUPYTER_IMARKDOWN_OUTPUT_CLASS);
-    renderer.addClass(JUPYTER_IMARKDOWN_OUTPUT_RESULT_CLASS);
-  }
-
-  protected _getExpressionOutput(name: string): Element | null {
-    const attachment = this.model.attachments.get(name);
-    // We need an attachment!
-    if (attachment === undefined) {
-      console.log(`Couldn't find attachment ${name}`);
-      return null;
+    if (isOutput(payload)) {
+      // Output results are simple to re-intepret
+      options = {
+        trusted: this.model.trusted,
+        data: payload.data,
+        metadata: payload.metadata
+      };
+    } else {
+      // Errors need to be formatted as stderr objects
+      options = {
+        data: {
+          'application/vnd.jupyter.stderr':
+            payload.traceback.join('\n') ||
+            `${payload.ename}: ${payload.evalue}`
+        }
+      };
     }
+    return this.__rendermime.createModel(options);
+  }
 
-    // FIXME: choose appropriate value for `safe`
+  /**
+   * Render the IExpressionResult produced by the kernel
+   */
+  protected _renderExpressionResult(payload: IExpressionResult): Element {
+    const model = this._createExpressionResultModel(payload);
+
     // Select preferred mimetype for bundle
-    const mimeType = this.__rendermime.preferredMimeType(
-      attachment.data,
-      'any'
-    );
+    // FIXME: choose appropriate value for `safe`
+    const mimeType = this.__rendermime.preferredMimeType(model.data, 'any');
     if (mimeType === undefined) {
-      console.log(`Couldn't find mimetype for ${name}`);
-      return null;
+      console.error("Couldn't find mimetype");
+      return this._renderError();
     }
 
     // Create renderer
     const renderer = this.__rendermime.createRenderer(mimeType);
-    const model = this.__rendermime.createModel({ data: attachment.data });
+    renderer.addClass(RENDERED_CLASS);
+    renderer.addClass(RESULT_CLASS);
 
-    renderer.renderModel(model).then(() => {
-      this._postProcessRenderer(renderer);
-    });
+    // Render model
+    renderer.renderModel(model);
 
     return renderer.node;
+  }
+
+  /**
+   * Render a generic error in-line
+   */
+  protected _renderError(): Element {
+    const node = document.createElement('span');
+    node.classList.add(RENDERED_CLASS);
+    node.classList.add(ERROR_CLASS);
+    return node;
+  }
+
+  /**
+   * Render the given expression from an existing cell attachment MIME bundle.
+   * Render an in-line error if no data are available.
+   */
+  protected _renderExpression(name: string): Element {
+    const attachment = this.model.attachments.get(name);
+    // We need an attachment!
+    if (attachment === undefined) {
+      console.error(`Couldn't find attachment ${name}`);
+      return this._renderError();
+    }
+
+    // Try and render the output from cell attachments
+    const payload = (attachment.data[OUTPUT_MIMETYPE] ??
+      attachment.data[ERROR_MIMETYPE]) as IExpressionResult;
+    if (payload !== undefined) {
+      return this._renderExpressionResult(payload);
+    }
+
+    // Couldn't find valid MIME bundle, so we need to handle that!
+    console.error(`Couldn't find valid MIME bundle for attachment ${name}`);
+    return this._renderError();
   }
 
   /**
    * Update rendered expressions from current attachment MIME-bundles
    */
   public renderExpressions(): void {
-    console.log('renderExpression', this.__expressions);
+    console.log('Rendering expressions');
     // Loop over expressions and render them from the cell attachments
     for (const name in this.__expressions) {
-      let node = this._getExpressionOutput(name);
-      if (node === null) {
-        // Create "missing" output by default
-        node = document.createElement('span');
-        node.classList.add(JUPYTER_IMARKDOWN_OUTPUT_CLASS);
-        node.classList.add(JUPYTER_IMARKDOWN_OUTPUT_MISSING_CLASS);
-      }
-
-      // Replace existing node
-      this._updatePlaceholder(name, node);
+      const node = this._renderExpression(name);
+      this._replaceRenderedExpression(name, node);
     }
+  }
+
+  /**
+   * Update an expression DOM node (result or placeholder) with a new result
+   */
+  protected _replaceRenderedExpression(name: string, node: Element): void {
+    const placeholder = this.__placeholders[name];
+    placeholder.parentNode?.replaceChild(node, placeholder);
+    this.__placeholders[name] = node;
   }
 
   /**
    * Wait for Markdown rendering to complete.
    * Assume that rendered container will have at least one child.
    */
-  private _waitForRender(widget: Widget, timeout: number): Promise<void> {
+  protected _waitForRender(widget: Widget, timeout: number): Promise<void> {
     // FIXME: this is a HACK
     return new Promise(resolve => {
       function waitReady() {
@@ -140,7 +196,6 @@ export class XMarkdownCell extends MarkdownCell {
       this._waitForRender(widget, 10).then(() => {
         this._identifyExpressions(widget);
         this.renderExpressions();
-        console.log(`Rendering done!`);
         this.__doneRendering.resolve();
       });
       this.__lastContent = currentContent;
@@ -151,15 +206,13 @@ export class XMarkdownCell extends MarkdownCell {
    * Parse the rendered markdown, and store placeholder and expression mappings
    */
   private _identifyExpressions(widget: Widget): void {
-    const exprInputNodes = widget.node.querySelectorAll(
-      `input.${JUPYTER_IMARKDOWN_EXPR_CLASS}`
-    );
+    const exprInputNodes = widget.node.querySelectorAll(`input.${EXPR_CLASS}`);
 
     // Store expressions & placeholders
     this.__expressions = {};
     this.__placeholders = {};
     exprInputNodes.forEach((node: Element, index: number) => {
-      const name = `${JUPYTER_IMARKDOWN_EXPRESSION_PREFIX}-${index}`;
+      const name = `${ATTACHMENT_PREFIX}-${index}`;
       this.__expressions[name] = (node as HTMLInputElement).value;
       this.__placeholders[name] = node;
     });
