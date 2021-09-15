@@ -1,13 +1,10 @@
 .im-result {
-  display: inline;
+  display: inline-block;
 }
 
 .im-result.jp-RenderedText {
   padding-left: initial;
-}
-
-.im-result.jp-RenderedText > pre {
-  display: inline;
+  overflow: initial; /* Not sure why this is works! */
 }
 
 .im-result > .widget-inline-hbox,
