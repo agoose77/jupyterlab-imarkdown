@@ -1,10 +1,19 @@
-import { JupyterFrontEnd, JupyterFrontEndPlugin } from "@jupyterlab/application";
-import { plugin } from "./plugin";
-import { INotebookTracker, Notebook, NotebookActions, NotebookPanel, StaticNotebook } from "@jupyterlab/notebook";
-import { IEditorServices } from "@jupyterlab/codeeditor";
-import { Cell, MarkdownCell } from "@jupyterlab/cells";
-import { ATTACHMENT_PREFIX, XMarkdownCell } from "./cell";
-import { loadUserExpressions } from "./kernel";
+import {
+  JupyterFrontEnd,
+  JupyterFrontEndPlugin
+} from '@jupyterlab/application';
+import { plugin } from './plugin';
+import {
+  INotebookTracker,
+  Notebook,
+  NotebookActions,
+  NotebookPanel,
+  StaticNotebook
+} from '@jupyterlab/notebook';
+import { IEditorServices } from '@jupyterlab/codeeditor';
+import { Cell, MarkdownCell } from '@jupyterlab/cells';
+import { ATTACHMENT_PREFIX, XMarkdownCell } from './cell';
+import { loadUserExpressions } from './kernel';
 
 class XMarkdownContentFactory extends NotebookPanel.ContentFactory {
   /**

@@ -1,9 +1,14 @@
-import { XMarkdownCell } from "./cell";
-import { ISessionContext } from "@jupyterlab/apputils";
-import { IMarkdownCellModel } from "@jupyterlab/cells";
-import { KernelMessage } from "@jupyterlab/services";
-import { PartialJSONObject } from "@lumino/coreutils";
-import { ERROR_MIMETYPE, IExpressionResult, isError, OUTPUT_MIMETYPE } from "./attachment";
+import { XMarkdownCell } from './cell';
+import { ISessionContext } from '@jupyterlab/apputils';
+import { IMarkdownCellModel } from '@jupyterlab/cells';
+import { KernelMessage } from '@jupyterlab/services';
+import { PartialJSONObject } from '@lumino/coreutils';
+import {
+  ERROR_MIMETYPE,
+  IExpressionResult,
+  isError,
+  OUTPUT_MIMETYPE
+} from './attachment';
 
 /**
  * Load user expressions for given XMarkdown cell from kernel.
