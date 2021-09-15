@@ -140,7 +140,7 @@ export class XMarkdownCell extends MarkdownCell {
       this._waitForRender(widget, 10).then(() => {
         this._identifyExpressions(widget);
         this.renderExpressions();
-        console.log(`Rendering done!`);
+        console.log('Rendering done!');
         this.__doneRendering.resolve();
       });
       this.__lastContent = currentContent;
