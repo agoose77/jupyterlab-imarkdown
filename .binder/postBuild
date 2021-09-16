@@ -2,10 +2,7 @@
 set -eux
 
 # Install the labextension
-jlpm install
-jlpm build
-pip install -e . --ignore-installed --no-deps -vv
-jupyter labextension develop . --overwrite
+pip install .
 
 # List extensions
 jupyter labextension list
