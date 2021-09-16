@@ -20,3 +20,4 @@ dependencies:
   - wheel
   # additional packages for demos
   - ipywidgets
+  - numpy
