@@ -1,4 +1,4 @@
-import expressionPlugin from './tokenize';
+import { expressionPlugin } from './tokenize';
 import { simpleMarkdownItPlugin } from '@agoose77/jupyterlab-markup';
 
 const PACKAGE_NS = '@agoose77/jupyterlab-imarkdown';

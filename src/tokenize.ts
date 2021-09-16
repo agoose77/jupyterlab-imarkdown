@@ -2,58 +2,51 @@ import MarkdownIt from 'markdown-it';
 
 export const EXPR_CLASS = 'im-expr';
 
-// Skip char codes from given position
-function skipChars(state: any, pos: number, code: number): number {
-  for (let max = state.src.length; pos < max; pos++) {
-    if (state.src.charCodeAt(pos) !== code) {
-      break;
-    }
-  }
-  return pos;
+export interface IOptions {
+  openDelim?: string;
+  closeDelim?: string;
 }
 
-function expressionPlugin(md: MarkdownIt): any {
+export function expressionPlugin(md: MarkdownIt, options: IOptions): any {
+  const openDelim = options?.openDelim ?? '{{';
+  const closeDelim = options?.closeDelim ?? '}}';
+
   function tokenize(state: any, silent: any) {
-    const openDelim = 0x7b;
-    const closeDelim = 0x7d;
-
-    const stop = state.posMax;
-
-    // Check we start with the correct marker
+    // Check we start with the correct markers
     let pos = state.pos;
-    const char = state.src.charCodeAt(pos);
-    if (char !== openDelim) {
+
+    // For performance, just check first character
+    if (state.src[pos] !== openDelim[0]) {
       return false;
     }
-    // We need exactly two open markers {{
-    let searchStartPos = pos;
-    pos = skipChars(state, pos, openDelim);
-    if (pos - searchStartPos !== 2) {
+
+    // Does the full substring match?
+    if (state.src.slice(pos, pos + openDelim.length) !== openDelim) {
       return false;
     }
+    pos += openDelim.length;
+
     // First index _after_ {{
     const startPos = pos;
 
-    // Find end marker }
-    let foundEndMarker = false;
-    while (pos <= stop) {
-      // Didn't find end marker
-      if (state.src.charCodeAt(pos) === closeDelim) {
-        foundEndMarker = true;
-        break;
+    // Find end marker }}
+    let stopPos = -1;
+    while (stopPos === -1) {
+      // Find first character of end marker
+      pos = state.src.indexOf(closeDelim[0], pos);
+      // Didn't find character
+      if (pos === -1) {
+        return false;
       }
-      pos++;
-    }
-    if (!foundEndMarker) {
-      return false;
-    }
-    // Index of first } in  }}
-    const stopPos = pos;
-    // We need exactly two end markers }}
-    searchStartPos = pos;
-    pos = skipChars(state, pos, closeDelim);
-    if (pos - searchStartPos !== 2) {
-      return false;
+
+      // If subsequent tokens don't match, just advance by one token!
+      if (state.src.slice(pos, pos + closeDelim.length) !== closeDelim) {
+        pos++;
+        continue;
+      }
+
+      stopPos = pos;
+      pos += closeDelim.length;
     }
 
     // Read tokens inside of the bracket
@@ -67,7 +60,6 @@ function expressionPlugin(md: MarkdownIt): any {
 
     return true;
   }
+
   md.inline.ruler.after('emphasis', 'expr', tokenize);
 }
-
-export default expressionPlugin;
