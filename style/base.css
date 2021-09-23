@@ -1,5 +1,6 @@
 .im-result {
   display: inline-block;
+  vertical-align: top;
 }
 
 .im-result.jp-RenderedText {
