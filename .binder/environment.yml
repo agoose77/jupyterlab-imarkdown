@@ -21,3 +21,4 @@ dependencies:
   # additional packages for demos
   - ipywidgets
   - numpy
+  - sympy
