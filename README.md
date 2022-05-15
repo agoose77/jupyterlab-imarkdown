@@ -1,9 +1,11 @@
 # jupyterlab_imarkdown
 
-[![binder-badge][]][binder]
+[![binder-badge][]][binder] [![pypi-badge][]][pypi]
 
 [binder-badge]: https://mybinder.org/badge_logo.svg
 [binder]: https://mybinder.org/v2/gh/agoose77/jupyterlab-imarkdown.git/master?urlpath=lab
+[pypi-badge]: https://img.shields.io/pypi/v/jupyterlab-imarkdown
+[pypi]: https://pypi.org/project/jupyterlab-imarkdown
 
 
 A JupyterLab extension to embed rich output in Markdown cells, e.g.
