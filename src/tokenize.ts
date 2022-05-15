@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 
-export const EXPR_CLASS = 'im-expr';
+export const EXPR_CLASS = 'eval-expr';
 
 export interface IOptions {
   openDelim?: string;
