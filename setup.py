@@ -46,6 +46,9 @@ setup_args = dict(
     install_requires=[
         "jupyterlab-markup~=1.0"
     ],
+    extras_require={
+        "examples": ["sympy>=1.0.0", "ipywidgets>=7.0.0", "numpy>=1.17"]
+    },
     zip_safe=False,
     include_package_data=True,
     python_requires=">=3.6",
