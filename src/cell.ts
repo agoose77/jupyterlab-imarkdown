@@ -31,7 +31,7 @@ export class XMarkdownCell extends MarkdownCell {
   private __doneRendering = new PromiseDelegate<void>();
 
   /**
-   * Create an IRenderMime.IMimeModel for a given IExpressionResult
+   * Render the given IExpressionResult to a DOM Element
    */
   public renderExpressionResultModel(
     payload: IExpressionResult
