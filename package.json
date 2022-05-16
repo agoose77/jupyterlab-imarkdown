@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab-imarkdown",
-  "version": "0.2.0",
+  "version": "0.2.0a0",
   "description": "A JupyterLab extension to render expressions given in Markdown.",
   "keywords": [
     "jupyter",
@@ -51,7 +51,6 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@agoose77/jupyterlab-markup": ">=2.0.0",
     "@jupyterlab/application": "^3.0.0",
     "@jupyterlab/apputils": "^3.0.0",
     "@jupyterlab/cells": "^3.0.0",
@@ -64,7 +63,6 @@
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.0.0",
-    "@types/markdown-it": "^12.2.3",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "eslint": "^7.14.0",
@@ -84,12 +82,7 @@
     "extension": true,
     "outputDir": "jupyterlab_imarkdown/labextension",
     "disabledExtensions": [],
-    "sharedPackages": {
-      "@agoose77/jupyterlab-markup": {
-        "bundled": false,
-        "singleton": true
-      }
-    }
+    "sharedPackages": {}
   },
   "jupyter-releaser": {
     "hooks": {

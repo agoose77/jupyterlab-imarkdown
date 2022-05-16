@@ -2,7 +2,6 @@ import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-import { plugin } from './plugin';
 import {
   INotebookTracker,
   Notebook,
@@ -103,5 +102,5 @@ const executor: JupyterFrontEndPlugin<void> = {
 /**
  * Export the plugins as default.
  */
-const plugins: JupyterFrontEndPlugin<any>[] = [factory, executor, plugin];
+const plugins: JupyterFrontEndPlugin<any>[] = [factory, executor];
 export default plugins;

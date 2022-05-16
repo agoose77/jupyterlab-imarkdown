@@ -43,11 +43,9 @@ setup_args = dict(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
-    install_requires=[
-        "jupyterlab-markup>=2.0"
-    ],
+    install_requires=[],
     extras_require={
-        "examples": ["sympy>=1.0.0", "ipywidgets>=7.0.0", "numpy>=1.17"]
+        "examples": ["sympy>=1.0.0", "ipywidgets>=7.0.0", "numpy>=1.17", "jupyterlab-markup-expr>=0.1.1"]
     },
     zip_safe=False,
     include_package_data=True,

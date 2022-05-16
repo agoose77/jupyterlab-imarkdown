@@ -1,6 +1,5 @@
 import { MarkdownCell } from '@jupyterlab/cells';
 import { Widget } from '@lumino/widgets';
-import { EXPR_CLASS } from './tokenize';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { PromiseDelegate } from '@lumino/coreutils';
 import { IUserExpressionMetadata, metadataSection } from './metadata';
@@ -17,6 +16,9 @@ export const RENDERED_CLASS = 'im-rendered';
 export const RESULT_CLASS = 'im-result';
 // CSS class for missing outputs
 export const ERROR_CLASS = 'im-error';
+// CSS class for expression nodes
+export const EXPR_CLASS = 'eval-expr';
+
 
 export class XMarkdownCell extends MarkdownCell {
   constructor(options: MarkdownCell.IOptions) {

@@ -15,6 +15,15 @@ The current value of x is {{ x }}
 
 ![preview](https://user-images.githubusercontent.com/1248413/133160417-95dfd03f-c0d5-43a3-8e1c-f3ae75949a8b.gif)
 
+## Technical Details
+
+`jupyterlab-imarkdown` has to do some pretty unpleasant things in order to provide interactive Markdown. 
+In particular, we implement our own `NotebookPanel.ContentFactory` in order to inject our own `XMarkdownCell`. 
+This custom class implements routines to detect when the Markdown cell has been rendered, keep track of special `eval-expr` DOM nodes, 
+and update these DOM nodes with the result of kernel execution.
+
+The `jupyterlab-markup` plugin that is bundled with this
+
 
 ## Requirements
 
