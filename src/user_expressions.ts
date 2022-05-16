@@ -1,7 +1,8 @@
 import { PartialJSONObject } from '@lumino/coreutils';
 
-export const OUTPUT_MIMETYPE = 'application/vnd.jupyterlab-imarkdown.output';
-export const ERROR_MIMETYPE = 'application/vnd.jupyterlab-imarkdown.error';
+/**
+ * Interfaces for `IExecuteReplyMsg.user_expressisons`
+ */
 
 export interface IBaseExpressionResult extends PartialJSONObject {
   status: string;

@@ -1,7 +1,7 @@
 {
   "name": "jupyterlab-imarkdown",
-  "version": "0.1.0",
-  "description": "A JupyterLab extension.",
+  "version": "0.2.0",
+  "description": "A JupyterLab extension to render expressions given in Markdown.",
   "keywords": [
     "jupyter",
     "jupyterlab",
@@ -51,7 +51,7 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@agoose77/jupyterlab-markup": "^2.0.0",
+    "@agoose77/jupyterlab-markup": ">=2.0.0",
     "@jupyterlab/application": "^3.0.0",
     "@jupyterlab/apputils": "^3.0.0",
     "@jupyterlab/cells": "^3.0.0",

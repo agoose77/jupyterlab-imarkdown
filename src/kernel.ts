@@ -2,37 +2,46 @@ import { XMarkdownCell } from './cell';
 import { ISessionContext } from '@jupyterlab/apputils';
 import { IMarkdownCellModel } from '@jupyterlab/cells';
 import { KernelMessage } from '@jupyterlab/services';
-import { PartialJSONObject } from '@lumino/coreutils';
-import {
-  ERROR_MIMETYPE,
-  IExpressionResult,
-  isError,
-  OUTPUT_MIMETYPE
-} from './attachment';
-
+import { JSONObject } from '@lumino/coreutils';
+import { IExpressionResult } from './user_expressions';
+import { IUserExpressionMetadata, metadataSection } from './metadata';
 /**
  * Load user expressions for given XMarkdown cell from kernel.
  * Store results in cell attachments.
  */
-export async function loadUserExpressions(
+export async function executeUserExpressions(
   cell: XMarkdownCell,
   sessionContext: ISessionContext
 ): Promise<void> {
-  const model = cell.model as IMarkdownCellModel;
-  const cellId = { cellId: model.id };
-
-  // Populate request data
-  const content: KernelMessage.IExecuteRequestMsg['content'] = {
-    code: '',
-    user_expressions: cell.expressions
-  };
-
-  // Perform request
-  console.log('Performing kernel request', cell.expressions);
+  // Check we have a kernel
   const kernel = sessionContext.session?.kernel;
   if (!kernel) {
     throw new Error('Session has no kernel.');
   }
+
+  const model = cell.model as IMarkdownCellModel;
+  const cellId = { cellId: model.id };
+
+  // Build ordered map from string index to node
+  const namedExpressions = new Map(
+    cell.expressions.map((expr, index) => [`${index}`, expr])
+  );
+  console.log(namedExpressions, cell.expressions);
+
+  // Extract expression values
+  const userExpressions: JSONObject = {};
+  namedExpressions.forEach((expr, key) => {
+    userExpressions[key] = expr;
+  });
+
+  // Populate request data
+  const content: KernelMessage.IExecuteRequestMsg['content'] = {
+    code: '',
+    user_expressions: userExpressions
+  };
+
+  // Perform request
+  console.log('Performing kernel request', content);
   const future = kernel.requestExecute(content, false, {
     ...model.metadata.toJSON(),
     ...cellId
@@ -40,28 +49,43 @@ export async function loadUserExpressions(
 
   // Set response handler
   future.onReply = (msg: KernelMessage.IExecuteReplyMsg) => {
+    console.log('Handling kernel response', msg);
+    // Only work with `ok` results
     const content = msg.content;
     if (content.status !== 'ok') {
+      console.error('Kernel response was not OK', msg);
       return;
     }
 
-    console.log('Handling kernel response', msg);
+    console.log('Clear existing metadata');
+    // Clear metadata if present
+    cell.model.metadata.delete(metadataSection);
 
-    // Store results as attachments
+    // Store results as metadata
+    const expressions: IUserExpressionMetadata[] = [];
     for (const key in content.user_expressions) {
+      const expr = namedExpressions.get(key);
+
+      if (expr === undefined) {
+        console.error(
+          "namedExpressions doesn't have key. This should never happen"
+        );
+        continue;
+      }
       const result = content.user_expressions[key] as IExpressionResult;
+      console.log(content.user_expressions[key]);
 
-      // Determine MIME type to store
-      const mimeType = isError(result) ? ERROR_MIMETYPE : OUTPUT_MIMETYPE;
+      const expressionMetadata: IUserExpressionMetadata = {
+        expression: expr,
+        result: result
+      };
+      expressions.push(expressionMetadata);
 
-      // Construct payload from kernel response
-      // We don't do any type validation here
-      const payload: PartialJSONObject = {};
-      payload[mimeType] = result;
-
-      cell.model.attachments.set(key, payload as any);
-      console.log(`Saving ${key} to cell attachments`);
+      console.log(`Saving ${expr} to cell attachments`, expressionMetadata);
     }
+
+    // Update cell metadata
+    cell.model.metadata.set(metadataSection, expressions);
   };
 
   await future.done;

@@ -12,8 +12,8 @@ import {
 } from '@jupyterlab/notebook';
 import { IEditorServices } from '@jupyterlab/codeeditor';
 import { Cell, MarkdownCell } from '@jupyterlab/cells';
-import { ATTACHMENT_PREFIX, XMarkdownCell } from './cell';
-import { loadUserExpressions } from './kernel';
+import { XMarkdownCell } from './cell';
+import { executeUserExpressions } from './kernel';
 
 class XMarkdownContentFactory extends NotebookPanel.ContentFactory {
   /**
@@ -53,15 +53,6 @@ function isMarkdownCell(cell: Cell): cell is XMarkdownCell {
   return cell.model.type === 'markdown';
 }
 
-function removeKernelAttachments(cell: XMarkdownCell) {
-  const attachments = cell.model.attachments;
-  attachments.keys
-    .filter(key => {
-      key.startsWith(ATTACHMENT_PREFIX);
-    })
-    .map(attachments.remove);
-}
-
 /**
  * The notebook cell executor.
  */
@@ -89,17 +80,17 @@ const executor: JupyterFrontEndPlugin<void> = {
         if (!isMarkdownCell(cell)) {
           return;
         }
-        console.log(
-          'Markdown cell was executed, waiting for render to complete ...'
+        console.debug(
+          `Markdown cell ${cell.model.id} was executed, waiting for render to complete ...`
         );
 
         cell.doneRendering.then(() => {
-          console.log('Clearing results from cell attachments');
-          removeKernelAttachments(cell);
-          console.log('Loading results from kernel');
-          loadUserExpressions(cell, ctx).then(() => {
-            console.log('Re-rendering cell!');
-            cell.renderExpressions();
+          console.debug(
+            `Loading results from kernel for cell ${cell.model.id}`
+          );
+          executeUserExpressions(cell, ctx).then(() => {
+            console.debug(`Re-rendering cell ${cell.model.id}`);
+            cell.renderExpressionsFromMetadata();
           });
         });
       }

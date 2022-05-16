@@ -1,31 +1,22 @@
 import { MarkdownCell } from '@jupyterlab/cells';
 import { Widget } from '@lumino/widgets';
 import { EXPR_CLASS } from './tokenize';
-import { IRenderMime, IRenderMimeRegistry } from '@jupyterlab/rendermime';
+import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { PromiseDelegate } from '@lumino/coreutils';
-import {
-  ERROR_MIMETYPE,
-  IExpressionResult,
-  isOutput,
-  OUTPUT_MIMETYPE
-} from './attachment';
+import { IUserExpressionMetadata, metadataSection } from './metadata';
+import { IExpressionResult, isOutput } from './user_expressions';
 
-// Name prefix for cell attachments
-export const ATTACHMENT_PREFIX = 'jupyterlab-imarkdown';
+interface IExpressionNode {
+  expression: string;
+  element: Element;
+}
+
 // Base CSS class for jupyterlab-imarkdown outputs
 export const RENDERED_CLASS = 'im-rendered';
 // CSS class for execution-result outputs
 export const RESULT_CLASS = 'im-result';
 // CSS class for missing outputs
 export const ERROR_CLASS = 'im-error';
-
-interface IExpressionMap {
-  [name: string]: string;
-}
-
-interface IElementMap {
-  [name: string]: Element;
-}
 
 export class XMarkdownCell extends MarkdownCell {
   constructor(options: MarkdownCell.IOptions) {
@@ -35,35 +26,20 @@ export class XMarkdownCell extends MarkdownCell {
   }
 
   private __rendermime: IRenderMimeRegistry;
-  private __expressions: IExpressionMap = {};
-  private __placeholders: IElementMap = {};
+  private __expressions: IExpressionNode[] = [];
   private __lastContent = '';
   private __doneRendering = new PromiseDelegate<void>();
 
   /**
-   * Get a mapping of names to kernel expressions.
-   */
-  get expressions(): IExpressionMap {
-    return this.__expressions;
-  }
-
-  /**
-   * Whether the Markdown renderer has finished rendering.
-   */
-  get doneRendering(): Promise<void> {
-    return this.__doneRendering.promise;
-  }
-
-  /**
    * Create an IRenderMime.IMimeModel for a given IExpressionResult
    */
-  protected _createExpressionResultModel(
+  public renderExpressionResultModel(
     payload: IExpressionResult
-  ): IRenderMime.IMimeModel {
+  ): Promise<Element> {
     let options: any;
 
     if (isOutput(payload)) {
-      // Output results are simple to re-intepret
+      // Output results are simple to reinterpret
       options = {
         trusted: this.model.trusted,
         data: payload.data,
@@ -79,21 +55,21 @@ export class XMarkdownCell extends MarkdownCell {
         }
       };
     }
-    return this.__rendermime.createModel(options);
-  }
 
-  /**
-   * Render the IExpressionResult produced by the kernel
-   */
-  protected _renderExpressionResult(payload: IExpressionResult): Element {
-    const model = this._createExpressionResultModel(payload);
+    // Invoke MIME renderer
+    const model = this.__rendermime.createModel(options);
 
     // Select preferred mimetype for bundle
     // FIXME: choose appropriate value for `safe`
     const mimeType = this.__rendermime.preferredMimeType(model.data, 'any');
     if (mimeType === undefined) {
-      console.error("Couldn't find mimetype");
-      return this._renderError();
+      console.error("Couldn't find mimetype for ", model);
+
+      // Return error result
+      const node = document.createElement('span');
+      node.classList.add(RENDERED_CLASS);
+      node.classList.add(ERROR_CLASS);
+      return Promise.resolve(node);
     }
 
     // Create renderer
@@ -102,64 +78,72 @@ export class XMarkdownCell extends MarkdownCell {
     renderer.addClass(RESULT_CLASS);
 
     // Render model
-    renderer.renderModel(model);
-
-    return renderer.node;
+    return renderer.renderModel(model).then(() => renderer.node);
   }
 
   /**
-   * Render a generic error in-line
+   * Get an array of names to kernel expressions.
    */
-  protected _renderError(): Element {
-    const node = document.createElement('span');
-    node.classList.add(RENDERED_CLASS);
-    node.classList.add(ERROR_CLASS);
-    return node;
+  get expressions(): string[] {
+    return this.__expressions.map(node => node.expression);
   }
 
   /**
-   * Render the given expression from an existing cell attachment MIME bundle.
-   * Render an in-line error if no data are available.
+   * Whether the Markdown renderer has finished rendering.
    */
-  protected _renderExpression(name: string): Element {
-    const attachment = this.model.attachments.get(name);
-    // We need an attachment!
-    if (attachment === undefined) {
-      console.error(`Couldn't find attachment ${name}`);
-      return this._renderError();
-    }
-
-    // Try and render the output from cell attachments
-    const payload = (attachment.data[OUTPUT_MIMETYPE] ??
-      attachment.data[ERROR_MIMETYPE]) as IExpressionResult;
-    if (payload !== undefined) {
-      return this._renderExpressionResult(payload);
-    }
-
-    // Couldn't find valid MIME bundle, so we need to handle that!
-    console.error(`Couldn't find valid MIME bundle for attachment ${name}`);
-    return this._renderError();
+  get doneRendering(): Promise<void> {
+    return this.__doneRendering.promise;
   }
 
   /**
    * Update rendered expressions from current attachment MIME-bundles
    */
-  public renderExpressions(): void {
-    console.log('Rendering expressions');
-    // Loop over expressions and render them from the cell attachments
-    for (const name in this.__expressions) {
-      const node = this._renderExpression(name);
-      this._replaceRenderedExpression(name, node);
-    }
-  }
+  public renderExpressionsFromMetadata(): void {
+    console.debug('Rendering expressions', this.expressions);
+    const expressionsMetadata = this.model.metadata.get(metadataSection) as
+      | IUserExpressionMetadata[]
+      | undefined;
 
-  /**
-   * Update an expression DOM node (result or placeholder) with a new result
-   */
-  protected _replaceRenderedExpression(name: string, node: Element): void {
-    const placeholder = this.__placeholders[name];
-    placeholder.parentNode?.replaceChild(node, placeholder);
-    this.__placeholders[name] = node;
+    if (expressionsMetadata === undefined) {
+      console.debug(
+        'Aborting rendering of expressions: no metadata',
+        this.expressions
+      );
+      return;
+    }
+
+    // Check we have enough keys
+    if (expressionsMetadata.length !== this.__expressions.length) {
+      console.error(
+        'Aborting rendering of expressions: expressions mismatch',
+        this.expressions,
+        expressionsMetadata
+      );
+      return;
+    }
+    // Loop over expressions and render them from the cell attachments
+    this.__expressions.forEach((node, index) => {
+      const metadata = expressionsMetadata[index];
+      // Can't render the remaining keys. Should we have aborted earlier?
+      if (metadata.expression !== node.expression) {
+        console.error(
+          `Metadata expression does not match Markdown expression at index ${index}`
+        );
+        return;
+      }
+      if (metadata.result === undefined) {
+        console.error(`Metadata has no result at index ${index}`);
+        return;
+      }
+      // Create element and replace it in the parent's DOM tree
+      console.debug(`Rendering ${metadata.expression} into ${node.element}`);
+
+      // Update the placeholder once rendered
+      this.renderExpressionResultModel(metadata.result).then(element => {
+        node.element.parentNode?.replaceChild(element, node.element);
+        node.element = element;
+      });
+    });
   }
 
   /**
@@ -188,14 +172,16 @@ export class XMarkdownCell extends MarkdownCell {
     const currentContent = this.model.value.text;
     // If the content has changed
     if (
-      this.__lastContent !== undefined &&
+      this.__lastContent !== undefined && // Not sure why this happens, but run with it.
       this.__lastContent !== currentContent
     ) {
       this.__doneRendering = new PromiseDelegate<void>();
-      // Store parsed expressions
-      this._waitForRender(widget, 10).then(() => {
+      // Wait for rendering to complete
+      this._waitForRender(widget, 2).then(() => {
+        // Identify markup expressions by placeholders
         this._identifyExpressions(widget);
-        this.renderExpressions();
+        // Replace placeholders with content from attachments
+        this.renderExpressionsFromMetadata();
         this.__doneRendering.resolve();
       });
       this.__lastContent = currentContent;
@@ -208,14 +194,13 @@ export class XMarkdownCell extends MarkdownCell {
   private _identifyExpressions(widget: Widget): void {
     const exprInputNodes = widget.node.querySelectorAll(`input.${EXPR_CLASS}`);
 
-    // Store expressions & placeholders
-    this.__expressions = {};
-    this.__placeholders = {};
-    exprInputNodes.forEach((node: Element, index: number) => {
-      const name = `${ATTACHMENT_PREFIX}-${index}`;
-      this.__expressions[name] = (node as HTMLInputElement).value;
-      this.__placeholders[name] = node;
-    });
-    console.log('Found expressions', this.__expressions, this.__placeholders);
+    // Store expressions & their current placeholders
+    this.__expressions = [...exprInputNodes].map(
+      (elem: Element, index: number) => ({
+        expression: (elem as HTMLInputElement).value,
+        element: elem
+      })
+    );
+    console.debug('Found expressions', this.__expressions);
   }
 }
