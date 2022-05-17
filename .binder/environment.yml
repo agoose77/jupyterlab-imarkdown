@@ -22,3 +22,6 @@ dependencies:
   - ipywidgets
   - numpy
   - sympy
+  - matplotlib
+  - ipympl
+  - jupyterlab-markup-expr
