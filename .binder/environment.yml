@@ -24,4 +24,6 @@ dependencies:
   - sympy
   - matplotlib
   - ipympl
+  - jupyterlab-markup
+pip:
   - jupyterlab-markup-expr
