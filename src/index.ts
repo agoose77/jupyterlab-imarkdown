@@ -11,10 +11,10 @@ import {
 } from '@jupyterlab/notebook';
 import { IEditorServices } from '@jupyterlab/codeeditor';
 import { Cell, MarkdownCell } from '@jupyterlab/cells';
-import { XMarkdownCell } from './cell';
-import { executeUserExpressions } from './kernel';
+import { IMarkdownCell } from './cell';
+import { notebookExecuted } from './actions';
 
-class XMarkdownContentFactory extends NotebookPanel.ContentFactory {
+class IMarkdownContentFactory extends NotebookPanel.ContentFactory {
   /**
    * Create a new markdown cell widget.
    *
@@ -29,7 +29,7 @@ class XMarkdownContentFactory extends NotebookPanel.ContentFactory {
     if (!options.contentFactory) {
       options.contentFactory = this;
     }
-    return new XMarkdownCell(options).initializeState();
+    return new IMarkdownCell(options).initializeState();
   }
 }
 
@@ -44,13 +44,9 @@ const factory: JupyterFrontEndPlugin<NotebookPanel.IContentFactory> = {
   activate: (app: JupyterFrontEnd, editorServices: IEditorServices) => {
     console.log('Using jupyterlab-imarkdown:editor');
     const editorFactory = editorServices.factoryService.newInlineEditor;
-    return new XMarkdownContentFactory({ editorFactory });
+    return new IMarkdownContentFactory({ editorFactory });
   }
 };
-
-function isMarkdownCell(cell: Cell): cell is XMarkdownCell {
-  return cell.model.type === 'markdown';
-}
 
 /**
  * The notebook cell executor.
@@ -62,36 +58,10 @@ const executor: JupyterFrontEndPlugin<void> = {
   activate: (app: JupyterFrontEnd, tracker: INotebookTracker) => {
     console.log('Using jupyterlab-imarkdown:executor');
 
-    const executed = NotebookActions.executed;
-    executed.connect(
+    NotebookActions.executed.connect(
       (sender: any, value: { notebook: Notebook; cell: Cell }) => {
         const { notebook, cell } = value;
-        // Find the Notebook panel
-        const panel = tracker.find((w: NotebookPanel) => {
-          return w.content === notebook;
-        });
-        // Retrieve the kernel context
-        const ctx = panel?.sessionContext;
-        if (ctx === undefined) {
-          return;
-        }
-        // Load the user expressions for the given cell.
-        if (!isMarkdownCell(cell)) {
-          return;
-        }
-        console.debug(
-          `Markdown cell ${cell.model.id} was executed, waiting for render to complete ...`
-        );
-
-        cell.doneRendering.then(() => {
-          console.debug(
-            `Loading results from kernel for cell ${cell.model.id}`
-          );
-          executeUserExpressions(cell, ctx).then(() => {
-            console.debug(`Re-rendering cell ${cell.model.id}`);
-            cell.renderExpressionsFromMetadata();
-          });
-        });
+        notebookExecuted(notebook, cell, tracker);
       }
     );
 

@@ -1,5 +1,11 @@
-/*Let most elements be inline blocks*/
-.im-result {
+/*The element wrapper must be invisible.*/
+/*Note that on Safari, this might break accessibility?*/
+.im-RenderedExpression {
+  display: contents;
+}
+
+/* Let most elements be inline */
+.im-RenderedExpression > * {
   display: inline;
 }
 
@@ -21,20 +27,20 @@
 }
 
 /*Render error messages properly*/
-.im-result.jp-RenderedText[data-mime-type='application/vnd.jupyter.stdout'],
-.im-result.jp-RenderedText[data-mime-type='application/vnd.jupyter.stderr']
+.im-RenderedExpression > .jp-RenderedText[data-mime-type='application/vnd.jupyter.stdout'],
+.im-RenderedExpression > .jp-RenderedText[data-mime-type='application/vnd.jupyter.stderr']
 {
   padding-left: unset;
 }
-.im-result.jp-RenderedText[data-mime-type='application/vnd.jupyter.stdout'] pre,
-.im-result.jp-RenderedText[data-mime-type='application/vnd.jupyter.stderr'] pre
+.im-RenderedExpression > .jp-RenderedText[data-mime-type='application/vnd.jupyter.stdout'] pre,
+.im-RenderedExpression > .jp-RenderedText[data-mime-type='application/vnd.jupyter.stderr'] pre
 {
   background-color: unset;
   display: inline-block;
 }
 
 /* style taken from ipywidgets/packages/base/css/index.css */
-.im-error::before {
+.im-RenderedExpressionError::before {
   content: '\f127'; /* fa-chain-broken */
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;

@@ -1,16 +1,26 @@
-import { XMarkdownCell } from './cell';
 import { ISessionContext } from '@jupyterlab/apputils';
-import { IMarkdownCellModel } from '@jupyterlab/cells';
+import { Cell, IMarkdownCellModel } from '@jupyterlab/cells';
 import { KernelMessage } from '@jupyterlab/services';
 import { JSONObject } from '@lumino/coreutils';
+import { IMarkdownCell } from './cell';
 import { IExpressionResult } from './user_expressions';
 import { IUserExpressionMetadata, metadataSection } from './metadata';
+import {
+  Notebook,
+  NotebookPanel,
+  INotebookTracker
+} from '@jupyterlab/notebook';
+
+function isMarkdownCell(cell: Cell): cell is IMarkdownCell {
+  return cell.model.type === 'markdown';
+}
+
 /**
  * Load user expressions for given XMarkdown cell from kernel.
  * Store results in cell attachments.
  */
 export async function executeUserExpressions(
-  cell: XMarkdownCell,
+  cell: IMarkdownCell,
   sessionContext: ISessionContext
 ): Promise<void> {
   // Check we have a kernel
@@ -87,4 +97,33 @@ export async function executeUserExpressions(
   };
 
   await future.done;
+}
+
+export function notebookExecuted(
+  notebook: Notebook,
+  cell: Cell,
+  tracker: INotebookTracker
+): void {
+  // Find the Notebook panel
+  const panel = tracker.find((w: NotebookPanel) => {
+    return w.content === notebook;
+  });
+  // Retrieve the kernel context
+  const ctx = panel?.sessionContext;
+  if (ctx === undefined) {
+    return;
+  }
+  // Load the user expressions for the given cell.
+  if (!isMarkdownCell(cell)) {
+    return;
+  }
+  console.debug(
+    `Markdown cell ${cell.model.id} was executed, waiting for render to complete ...`
+  );
+
+  cell.doneRendering
+    .then(() => executeUserExpressions(cell, ctx))
+    .catch(console.error)
+    .then(() => cell.renderExpressionsFromMetadata())
+    .catch(console.error);
 }
