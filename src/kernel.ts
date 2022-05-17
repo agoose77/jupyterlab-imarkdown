@@ -26,7 +26,6 @@ export async function executeUserExpressions(
   const namedExpressions = new Map(
     cell.expressions.map((expr, index) => [`${index}`, expr])
   );
-  console.log(namedExpressions, cell.expressions);
 
   // Extract expression values
   const userExpressions: JSONObject = {};
@@ -41,7 +40,7 @@ export async function executeUserExpressions(
   };
 
   // Perform request
-  console.log('Performing kernel request', content);
+  console.debug('Performing kernel request', content);
   const future = kernel.requestExecute(content, false, {
     ...model.metadata.toJSON(),
     ...cellId
@@ -49,7 +48,7 @@ export async function executeUserExpressions(
 
   // Set response handler
   future.onReply = (msg: KernelMessage.IExecuteReplyMsg) => {
-    console.log('Handling kernel response', msg);
+    console.debug('Handling kernel response', msg);
     // Only work with `ok` results
     const content = msg.content;
     if (content.status !== 'ok') {
@@ -57,7 +56,7 @@ export async function executeUserExpressions(
       return;
     }
 
-    console.log('Clear existing metadata');
+    console.debug('Clear existing metadata');
     // Clear metadata if present
     cell.model.metadata.delete(metadataSection);
 
@@ -73,7 +72,6 @@ export async function executeUserExpressions(
         continue;
       }
       const result = content.user_expressions[key] as IExpressionResult;
-      console.log(content.user_expressions[key]);
 
       const expressionMetadata: IUserExpressionMetadata = {
         expression: expr,
@@ -81,7 +79,7 @@ export async function executeUserExpressions(
       };
       expressions.push(expressionMetadata);
 
-      console.log(`Saving ${expr} to cell attachments`, expressionMetadata);
+      console.debug(`Saving ${expr} to cell attachments`, expressionMetadata);
     }
 
     // Update cell metadata

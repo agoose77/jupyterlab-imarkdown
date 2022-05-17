@@ -1,16 +1,36 @@
+/*Let most elements be inline blocks*/
 .im-result {
-  display: inline-block;
+  display: inline;
+}
+
+/*Helper classes*/
+.vertical-align-top {
   vertical-align: top;
 }
-
-.im-result.jp-RenderedText {
-  padding-left: initial;
-  overflow: initial; /* Not sure why this is works! */
+.vertical-align-text-top {
+  vertical-align: text-top;
+}
+.vertical-align-middle {
+  vertical-align: middle;
+}
+.vertical-align-bottom {
+  vertical-align: bottom;
+}
+.vertical-align-text-bottom {
+  vertical-align: text-bottom;
 }
 
-.im-result > .widget-inline-hbox,
-.im-result > .widget-inline-vbox {
-  display: inline-flex;
+/*Render error messages properly*/
+.im-result.jp-RenderedText[data-mime-type='application/vnd.jupyter.stdout'],
+.im-result.jp-RenderedText[data-mime-type='application/vnd.jupyter.stderr']
+{
+  padding-left: unset;
+}
+.im-result.jp-RenderedText[data-mime-type='application/vnd.jupyter.stdout'] pre,
+.im-result.jp-RenderedText[data-mime-type='application/vnd.jupyter.stderr'] pre
+{
+  background-color: unset;
+  display: inline-block;
 }
 
 /* style taken from ipywidgets/packages/base/css/index.css */
