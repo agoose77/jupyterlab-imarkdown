@@ -18,11 +18,9 @@ The current value of x is {{ x }}
 ## Technical Details
 
 `jupyterlab-imarkdown` has to do some pretty unpleasant things in order to provide interactive Markdown. 
-In particular, we implement our own `NotebookPanel.ContentFactory` in order to inject our own `XMarkdownCell`. 
+In particular, we implement our own `NotebookPanel.ContentFactory` in order to inject our own `IMarkdownCell`. 
 This custom class implements routines to detect when the Markdown cell has been rendered, keep track of special `eval-expr` DOM nodes, 
 and update these DOM nodes with the result of kernel execution.
-
-The `jupyterlab-markup` plugin that is bundled with this
 
 
 ## Requirements
