@@ -1,6 +1,6 @@
 {
   "name": "@agoose77/jupyterlab-imarkdown",
-  "version": "0.2.0a0",
+  "version": "0.2.0",
   "description": "A JupyterLab extension to render expressions given in Markdown.",
   "keywords": [
     "jupyter",
