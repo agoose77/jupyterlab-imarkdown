@@ -10,7 +10,7 @@
 
 A JupyterLab extension to embed rich output in Markdown cells.
 
-This extension implements only the machinery required to embed rich outputs. Parsing Markdown into expressions is performed with a separate plugin `jupyterlab-markup-exp`:
+This extension implements only the machinery required to embed rich outputs. Parsing Markdown into expressions is performed with a separate plugin `jupyterlab-markup-exp` that must be installed:
 ```markdown
 The current value of x is {{ x }}
 ```
