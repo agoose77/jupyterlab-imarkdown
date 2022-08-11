@@ -28,6 +28,7 @@ and update these DOM nodes with the result of kernel execution.
 ## Requirements
 
 - JupyterLab >= 3.0
+- `jupyterlab-markup-expr` for `{{ expr }}` parsing (optional)
 
 ## Install
 
