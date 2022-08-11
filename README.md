@@ -8,7 +8,9 @@
 [pypi]: https://pypi.org/project/jupyterlab-imarkdown
 
 
-A JupyterLab extension to embed rich output in Markdown cells, e.g.
+A JupyterLab extension to embed rich output in Markdown cells.
+
+This extension implements only the machinery required to embed rich outputs. Parsing Markdown into expressions is performed with a separate plugin `jupyterlab-markup-exp`:
 ```markdown
 The current value of x is {{ x }}
 ```
