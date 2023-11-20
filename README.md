@@ -7,7 +7,7 @@
 [pypi-badge]: https://img.shields.io/pypi/v/jupyterlab-imarkdown
 [pypi]: https://pypi.org/project/jupyterlab-imarkdown
 
-> **Warning**
+> [!WARNING]
 > This extension is effectively in maintenance mode; [`jupyterlab-myst`](https://github.com/executablebooks/jupyterlab-myst) provides this feature (and more!) under a single extension. Feel free to check it out!
 
 A JupyterLab extension to embed rich output in Markdown cells.
